@@ -6,11 +6,11 @@ import { z } from "zod";
 
 export async function usuarioRoutes(app: FastifyInstance) {
   app.put(
-    "/api/usuarios",
+    "/api/usuario/atualizar",
     {
       preHandler: authMiddleware,
       schema: {
-        tags: ["Usuários"],
+        tags: ["Usuário"],
         security: [{ bearerAuth: [] }],
         body: atualizarUsuarioSchema,
         response: { 200: atualizarUsuarioSchema },
@@ -20,11 +20,11 @@ export async function usuarioRoutes(app: FastifyInstance) {
   );
 
   app.put(
-    "/api/usuarios/senha",
+    "/api/usuario/senha",
     {
       preHandler: authMiddleware,
       schema: {
-        tags: ["Usuários"],
+        tags: ["Usuário"],
         security: [{ bearerAuth: [] }],
         body: atualizarSenhaSchema,
         response: { 200: z.object({ message: z.string() }) },
