@@ -6,6 +6,7 @@ declare module "fastify" {
       id: string;
       email: string;
       tipo: "ADMINISTRADOR" | "GESTOR" | "AVALIADOR";
+      instituicao: string;
     };
   }
 }

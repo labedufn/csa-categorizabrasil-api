@@ -12,6 +12,8 @@ export async function conviteRoutes(app: FastifyInstance) {
       schema: {
         tags: ["Convites"],
         security: [{ bearerAuth: [] }],
+        description:
+          "Envia um convite para o email informado. É necessário informar o token Bearer no header 'Authorization'. (Apenas ADMINISTRADOR e GESTOR) (Se o usuário for GESTOR, a instituição será herdada para o usuário)",
         body: conviteCreateSchema,
         response: { 200: conviteResponseSchema },
       },
