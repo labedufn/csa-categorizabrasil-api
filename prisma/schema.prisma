@@ -8,7 +8,29 @@ datasource db {
 }
 
 model Usuario {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  nome      String?
+  id          String  @id @default(uuid())
+  nome        String
+  sobrenome   String
+  cpf         String  @unique
+  email       String  @unique
+  senha       String
+  instituicao String
+  tipo        String
+  ativo       Boolean @default(true)
+  criadoEm   DateTime @default(now()) @map("criado_em")
+  atualizadoEm   DateTime @updatedAt @map("atualizado_em")
 }
+
+model Convite {
+  id          String   @id @default(uuid())
+  token       String   @unique
+  criadorId   String
+  email       String
+  instituicao String   
+  tipo        String   
+  criadoEm    DateTime @default(now())
+  expiresAt   DateTime
+  usado       Boolean  @default(false)
+}
+
+
