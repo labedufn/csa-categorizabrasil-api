@@ -19,6 +19,8 @@ model Usuario {
   ativo       Boolean @default(true)
   criadoEm   DateTime @default(now()) @map("criado_em")
   atualizadoEm   DateTime @updatedAt @map("atualizado_em")
+
+  redefinirSenhas RedefinirSenha[]
 }
 
 model Convite {
@@ -29,8 +31,17 @@ model Convite {
   instituicao String   
   tipo        String   
   criadoEm    DateTime @default(now())
-  expiresAt   DateTime
+  expiraEm   DateTime
   usado       Boolean  @default(false)
 }
 
+model RedefinirSenha {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  usuarioId    String
+  expiraEm DateTime
+  usado     Boolean  @default(false)
+  criadoEm  DateTime @default(now())
 
+  usuario      Usuario  @relation(fields: [usuarioId], references: [id])
+}
