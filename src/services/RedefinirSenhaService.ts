@@ -1,16 +1,18 @@
 import { generatePasswordResetEmailTemplate } from "../templates/redefinirSenha.template";
+import { EmailService } from "./EmailService";
 import { prisma } from "../config/prisma";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import axios from "axios";
 
 export class RedefinirSenhaService {
+  private emailService = new EmailService();
+
   /**
    * Solicita a redefinição de senha:
    * - Procura o usuário pelo e‑mail.
-   * - Gera um token JWT válido por 15 minutos, armazena no modelo RedefinirSenha.
+   * - Gera um token JWT válido por 15 minutos e o armazena no modelo RedefinirSenha.
    * - Constrói o link de redefinição.
-   * - Envia o e‑mail utilizando a API externa.
+   * - Envia o e‑mail utilizando o EmailService.
    */
   async solicitarRedefinirSenha(email: string): Promise<void> {
     const usuario = await prisma.usuario.findUnique({ where: { email } });
@@ -38,21 +40,18 @@ export class RedefinirSenhaService {
       frontendUrl,
     });
 
-    await axios.post(
-      process.env.EMAIL_API_URL || "http://localhost:3001",
-      {
-        to: usuario.email,
-        subject: "Redefinição de Senha",
-        html: emailHtml,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.EMAIL_API_TOKEN}`,
-        },
-      },
-    );
+    await this.emailService.sendEmail({
+      to: usuario.email,
+      subject: "Redefinição de Senha",
+      html: emailHtml,
+    });
   }
 
+  /**
+   * Redefine a senha do usuário:
+   * - Verifica se o token é válido, não expirou e não foi usado.
+   * - Atualiza a senha do usuário e marca o token como usado.
+   */
   async redefinirSenha(token: string, novaSenha: string): Promise<void> {
     const secret = process.env.JWT_SECRET || "supersecret";
     let payload: any;

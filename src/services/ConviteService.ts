@@ -1,11 +1,15 @@
+import { generateInvitationEmailTemplate } from "../templates/convite.template";
+import { EmailService } from "./EmailService";
 import { prisma } from "../config/prisma";
 import jwt from "jsonwebtoken";
 
 export class ConviteService {
+  private emailService = new EmailService();
+
   async enviarConvite(criadorId: string, email: string, instituicao: string, tipo: string): Promise<string> {
     const secret = process.env.JWT_SECRET || "supersecret";
     const token = jwt.sign({ convite: true, criadorId, email, instituicao, tipo }, secret, { expiresIn: "15m" });
-    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+    const expiraEm = new Date(Date.now() + 15 * 60 * 1000);
 
     await prisma.convite.create({
       data: {
@@ -14,29 +18,28 @@ export class ConviteService {
         email,
         instituicao,
         tipo,
-        expiresAt,
+        expiraEm,
       },
     });
 
-    const baseUrl = process.env.BASE_URL || "http://localhost:8000";
-    return `${baseUrl}/convite?token=${token}`;
-  }
+    const baseUrl = process.env.BASE_URL || "http://localhost:3000";
+    const invitationLink = `${baseUrl}/convite?token=${token}`;
 
-  async validarConvite(token: string): Promise<boolean> {
-    const convite = await prisma.convite.findUnique({ where: { token } });
-    if (!convite) return false;
-    if (convite.expiresAt < new Date() || convite.usado) return false;
-    return true;
-  }
+    const userName = "Convidado";
 
-  async getConvite(token: string) {
-    return await prisma.convite.findUnique({ where: { token } });
-  }
-
-  async marcarConviteComoUsado(token: string): Promise<void> {
-    await prisma.convite.update({
-      where: { token },
-      data: { usado: true },
+    const emailHtml = generateInvitationEmailTemplate({
+      userName,
+      userEmail: email,
+      invitationLink,
+      frontendUrl: baseUrl,
     });
+
+    await this.emailService.sendEmail({
+      to: email,
+      subject: "Você foi convidado!",
+      html: emailHtml,
+    });
+
+    return invitationLink;
   }
 }
