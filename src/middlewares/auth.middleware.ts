@@ -1,4 +1,3 @@
-// src/middlewares/auth.middleware.ts
 import { FastifyRequest, FastifyReply } from "fastify";
 import { prisma } from "../config/prisma";
 import { Auth } from "../config/auth";

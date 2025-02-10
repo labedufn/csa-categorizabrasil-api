@@ -1,4 +1,3 @@
-// src/routes/usuario.routes.ts
 import { atualizarUsuarioSchema, atualizarSenhaSchema } from "../schemas/usuario.schema";
 import { UsuarioController } from "../controllers/UsuarioController";
 import { authMiddleware } from "../middlewares/auth.middleware";

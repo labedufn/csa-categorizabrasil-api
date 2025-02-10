@@ -30,7 +30,6 @@ export class AuthController {
         return reply.status(400).send({ message: "Convite inválido ou expirado" });
       }
 
-      // Constrói os dados de registro combinando os dados do convite com os dados fornecidos pelo usuário
       const dadosRegistro = {
         nome,
         sobrenome,
@@ -41,10 +40,8 @@ export class AuthController {
         tipo: convite.tipo,
       };
 
-      // Registra o usuário usando o AuthService
       const resultado = await authService.registrarUsuario(dadosRegistro);
 
-      // Marca o convite como usado
       await conviteService.marcarConviteComoUsado(conviteToken);
 
       reply.status(201).send(resultado);

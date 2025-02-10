@@ -1,4 +1,3 @@
-// src/controllers/ConviteController.ts
 import { conviteCreateSchema } from "../schemas/convite.schema";
 import { ConviteService } from "../services/ConviteService";
 import { FastifyReply, FastifyRequest } from "fastify";
