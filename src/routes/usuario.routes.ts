@@ -1,11 +1,26 @@
-import { atualizarUsuarioSchema, atualizarSenhaSchema } from "../schemas/usuario.schema";
+import { atualizarUsuarioSchema, atualizarSenhaSchema, listarUsuariosSchema } from "../schemas/usuario.schema";
 import { UsuarioController } from "../controllers/UsuarioController";
 import { authMiddleware } from "../middlewares/auth.middleware";
+import { roleMiddleware } from "../middlewares/role.middleware";
 import { authHeadersSchema } from "../schemas/headers.schema";
 import { FastifyInstance } from "fastify";
-import { z } from "zod";
 
 export async function usuarioRoutes(app: FastifyInstance) {
+  app.get(
+    "/api/usuarios",
+    {
+      preHandler: authMiddleware,
+      schema: {
+        tags: ["Usuário"],
+        security: [{ bearerAuth: [] }],
+        headers: authHeadersSchema,
+        description: "Lista todos os usuários. É necessário informar o token Bearer no header 'Authorization'.",
+        response: { 200: listarUsuariosSchema },
+      },
+    },
+    UsuarioController.listarUsuarios,
+  );
+
   app.put(
     "/api/usuario/atualizar",
     {
@@ -25,14 +40,14 @@ export async function usuarioRoutes(app: FastifyInstance) {
   app.put(
     "/api/usuario/senha",
     {
-      preHandler: authMiddleware,
+      preHandler: [authMiddleware, roleMiddleware(["ADMINISTRADOR", "GESTOR"])],
       schema: {
         tags: ["Usuário"],
         security: [{ bearerAuth: [] }],
         headers: authHeadersSchema,
         description: "Atualiza a senha do usuário. É necessário informar o token Bearer no header 'Authorization'.",
         body: atualizarSenhaSchema,
-        response: { 200: z.object({ message: z.string() }) },
+        response: { 200: atualizarSenhaSchema },
       },
     },
     UsuarioController.atualizarSenha,

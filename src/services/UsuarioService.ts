@@ -30,4 +30,10 @@ export class UsuarioService {
 
     return { message: "Senha atualizada com sucesso" };
   }
+
+  // Listar todos os usuários (apenas ativos)
+  async listarUsuarios() {
+    const usuarios = await prisma.usuario.findMany({ where: { ativo: true } });
+    return usuarios;
+  }
 }

@@ -33,4 +33,13 @@ export class UsuarioController {
       reply.status(400).send({ message: (error as Error).message });
     }
   }
+
+  static async listarUsuarios(req: FastifyRequest, reply: FastifyReply) {
+    try {
+      const usuarios = await service.listarUsuarios();
+      reply.send(usuarios);
+    } catch (error) {
+      reply.status(400).send({ message: (error as Error).message });
+    }
+  }
 }

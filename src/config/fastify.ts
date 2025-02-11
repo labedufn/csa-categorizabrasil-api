@@ -1,4 +1,5 @@
 import { serializerCompiler, validatorCompiler } from "fastify-type-provider-zod";
+import { SwaggerTheme, SwaggerThemeNameEnum } from "swagger-themes";
 import { FastifyTypedInstance } from "../types/fastifyTypes";
 import { fastifySwaggerUi } from "@fastify/swagger-ui";
 import { fastifySwagger } from "@fastify/swagger";
@@ -25,6 +26,9 @@ app.register(fastifyCors, {
   credentials: true,
 });
 
+const theme = new SwaggerTheme();
+const darkThemeCSS = theme.getBuffer(SwaggerThemeNameEnum.ONE_DARK);
+
 app.register(fastifySwagger, swaggerOptions);
 app.register(fastifySwaggerUi, {
   routePrefix: "/docs",
@@ -35,5 +39,6 @@ app.register(fastifySwaggerUi, {
   transformStaticCSP: (header) => header,
   theme: {
     title: "API CSA - Documentação",
+    css: [{ filename: "theme.css", content: darkThemeCSS }],
   },
 });

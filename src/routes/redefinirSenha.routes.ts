@@ -1,7 +1,11 @@
-// src/routes/redefinirSenha.routes.ts
+import {
+  redefinirSenhaBodySchema,
+  redefinirSenhaResponseSchema,
+  requestRedefinirSenhaBodySchema,
+  requestRedefinirSenhaResponseSchema,
+} from "../schemas/redefinirSenha.schema";
 import { AuthController } from "../controllers/AuthController";
 import { FastifyInstance } from "fastify";
-import { z } from "zod";
 
 export async function redefinirSenhaRoutes(app: FastifyInstance) {
   app.post(
@@ -9,13 +13,9 @@ export async function redefinirSenhaRoutes(app: FastifyInstance) {
     {
       schema: {
         tags: ["Redefinir de Senha"],
-        body: z.object({
-          email: z.string().email(),
-        }),
+        body: requestRedefinirSenhaBodySchema,
         response: {
-          200: z.object({
-            message: z.string(),
-          }),
+          200: requestRedefinirSenhaResponseSchema,
         },
       },
     },
@@ -27,14 +27,9 @@ export async function redefinirSenhaRoutes(app: FastifyInstance) {
     {
       schema: {
         tags: ["Redefinir de Senha"],
-        body: z.object({
-          token: z.string(),
-          novaSenha: z.string().min(6),
-        }),
+        body: redefinirSenhaBodySchema,
         response: {
-          200: z.object({
-            message: z.string(),
-          }),
+          200: redefinirSenhaResponseSchema,
         },
       },
     },

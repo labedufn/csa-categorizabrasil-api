@@ -15,12 +15,10 @@ export async function authMiddleware(req: FastifyRequest, reply: FastifyReply) {
     }
 
     const decoded = Auth.verificarToken(token) as { id: string; email: string };
-    console.log("Token decodificado:", decoded);
 
     const usuarioFromDb = await prisma.usuario.findUnique({
       where: { id: decoded.id },
     });
-    console.log("Usuário do DB:", usuarioFromDb);
 
     if (!usuarioFromDb) {
       return reply.status(401).send({ message: "Usuário não encontrado" });
@@ -33,7 +31,6 @@ export async function authMiddleware(req: FastifyRequest, reply: FastifyReply) {
       instituicao: usuarioFromDb.instituicao,
     };
   } catch (error) {
-    console.error("Erro no authMiddleware:", error);
     return reply.status(401).send({ message: "Acesso não autorizado", error: (error as Error).message });
   }
 }
