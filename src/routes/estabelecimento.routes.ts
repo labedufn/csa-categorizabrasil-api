@@ -16,7 +16,7 @@ export async function estabelecimentoRoutes(app: FastifyInstance) {
     {
       preHandler: authMiddleware,
       schema: {
-        tags: ["Estabelecimentos"],
+        tags: ["Estabelecimento"],
         security: [{ bearerAuth: [] }],
         headers: authHeadersSchema,
         description: "Cria um estabelecimento. É necessário informar o token Bearer no header 'Authorization'.",
@@ -36,7 +36,10 @@ export async function estabelecimentoRoutes(app: FastifyInstance) {
     {
       preHandler: [authMiddleware, roleMiddleware(["ADMINISTRADOR", "GESTOR"])],
       schema: {
-        tags: ["Estabelecimentos"],
+        tags: ["Estabelecimento"],
+        security: [{ bearerAuth: [] }],
+        headers: authHeadersSchema,
+        description: "Edita um estabelecimento. É necessário informar o token Bearer no header 'Authorization'.",
         body: editarEstabelecimentoBodySchema,
         response: {
           200: editarEstabelecimentoResponseSchema,
