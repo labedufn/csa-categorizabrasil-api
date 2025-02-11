@@ -64,10 +64,10 @@ export class UsuarioController {
         return reply.status(401).send({ message: "Usuário não autenticado" });
       }
 
-      const { id } = req.params as { id: string };
+      const { id: usuarioId } = req.params as { id: string };
 
       if (usuarioLogado.tipo === "GESTOR") {
-        const usuarioAlvo = await service.obterUsuarioPorId(id);
+        const usuarioAlvo = await service.obterUsuarioPorId(usuarioId);
         if (!usuarioAlvo) {
           return reply.status(404).send({ message: "Usuário não encontrado" });
         }
@@ -78,7 +78,7 @@ export class UsuarioController {
         return reply.status(403).send({ message: "Acesso negado" });
       }
 
-      const resultado = await service.desativarUsuario(id);
+      const resultado = await service.desativarUsuario(usuarioId);
       reply.send(resultado);
     } catch (error) {
       reply.status(400).send({ message: (error as Error).message });

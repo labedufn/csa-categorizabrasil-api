@@ -49,3 +49,41 @@ export const editarEstabelecimentoResponseSchema = z
       .passthrough(),
   })
   .passthrough();
+
+export const listarEstabelecimentosResponseSchema = z.array(
+  z.object({
+    id: z.string(),
+    nome: z.string(),
+    cnpj: z.string(),
+    cnae: z.string(),
+    endereco: z.string(),
+    pessoalOcupado: z.number(),
+    numeroRefeicoes: z.number(),
+    possuiAlvaraSanitario: z.number(),
+    possuiResponsavelBoasPraticas: z.number(),
+    dataAlteracao: z.preprocess((arg) => (arg instanceof Date ? arg.toISOString() : arg), z.string()),
+    alteradoPor: z.string(),
+    ativo: z.boolean(),
+  }),
+);
+
+export const desativarEstabelecimentoBodySchema = z.object({
+  ativo: z.boolean().optional(),
+});
+
+export const desativarEstabelecimentoResponseSchema = z.object({
+  estabelecimentoDesativado: z.object({
+    id: z.string(),
+    nome: z.string(),
+    cnpj: z.string(),
+    cnae: z.string(),
+    endereco: z.string(),
+    pessoalOcupado: z.number(),
+    numeroRefeicoes: z.number(),
+    possuiAlvaraSanitario: z.number(),
+    possuiResponsavelBoasPraticas: z.number(),
+    dataAlteracao: z.preprocess((arg) => (arg instanceof Date ? arg.toISOString() : arg), z.string()),
+    alteradoPor: z.string(),
+    ativo: z.boolean(),
+  }),
+});

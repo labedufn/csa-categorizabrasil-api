@@ -46,7 +46,7 @@ export async function usuarioRoutes(app: FastifyInstance) {
   );
 
   app.put(
-    "/api/usuario/desativar",
+    "/api/usuario/desativar/:id",
     {
       preHandler: [authMiddleware, roleMiddleware(["ADMINISTRADOR", "GESTOR"])],
       schema: {
@@ -79,7 +79,7 @@ export async function usuarioRoutes(app: FastifyInstance) {
   );
 
   app.put(
-    "/api/usuario/:id/tipo",
+    "/api/usuario/tipo/:id",
     {
       preHandler: authMiddleware,
       schema: {

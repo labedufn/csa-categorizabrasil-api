@@ -57,4 +57,52 @@ export class EstabelecimentoService {
     });
     return estabelecimentoAtualizado;
   }
+
+  async listarEstabelecimentos() {
+    const estabelecimentos = await prisma.estabelecimento.findMany({
+      where: {
+        ativo: true,
+      },
+      select: {
+        id: true,
+        nome: true,
+        cnpj: true,
+        cnae: true,
+        endereco: true,
+        pessoalOcupado: true,
+        numeroRefeicoes: true,
+        possuiAlvaraSanitario: true,
+        possuiResponsavelBoasPraticas: true,
+        dataAlteracao: true,
+        alteradoPor: true,
+        ativo: true,
+      },
+    });
+    return estabelecimentos;
+  }
+
+  async desativarEstabelecimento(id: string, alteradoPor: string) {
+    const estabelecimentoDesativado = await prisma.estabelecimento.update({
+      where: { id },
+      data: {
+        ativo: false,
+        alteradoPor,
+      },
+      select: {
+        id: true,
+        nome: true,
+        cnpj: true,
+        cnae: true,
+        endereco: true,
+        pessoalOcupado: true,
+        numeroRefeicoes: true,
+        possuiAlvaraSanitario: true,
+        possuiResponsavelBoasPraticas: true,
+        dataAlteracao: true,
+        alteradoPor: true,
+        ativo: true,
+      },
+    });
+    return estabelecimentoDesativado;
+  }
 }

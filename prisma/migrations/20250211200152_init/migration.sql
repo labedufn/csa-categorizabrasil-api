@@ -42,6 +42,24 @@ CREATE TABLE "RedefinirSenha" (
     CONSTRAINT "RedefinirSenha_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Estabelecimento" (
+    "id" TEXT NOT NULL,
+    "nome" TEXT NOT NULL,
+    "cnpj" TEXT NOT NULL,
+    "cnae" TEXT NOT NULL,
+    "endereco" TEXT NOT NULL,
+    "pessoalOcupado" INTEGER NOT NULL,
+    "numeroRefeicoes" INTEGER NOT NULL,
+    "possuiAlvaraSanitario" INTEGER NOT NULL,
+    "possuiResponsavelBoasPraticas" INTEGER NOT NULL,
+    "alteradoPor" TEXT NOT NULL,
+    "ativo" BOOLEAN NOT NULL DEFAULT true,
+    "dataAlteracao" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Estabelecimento_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Usuario_cpf_key" ON "Usuario"("cpf");
 
@@ -54,5 +72,14 @@ CREATE UNIQUE INDEX "Convite_token_key" ON "Convite"("token");
 -- CreateIndex
 CREATE UNIQUE INDEX "RedefinirSenha_token_key" ON "RedefinirSenha"("token");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "Estabelecimento_cnpj_key" ON "Estabelecimento"("cnpj");
+
+-- AddForeignKey
+ALTER TABLE "Convite" ADD CONSTRAINT "Convite_criadorId_fkey" FOREIGN KEY ("criadorId") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
 -- AddForeignKey
 ALTER TABLE "RedefinirSenha" ADD CONSTRAINT "RedefinirSenha_usuarioId_fkey" FOREIGN KEY ("usuarioId") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Estabelecimento" ADD CONSTRAINT "Estabelecimento_alteradoPor_fkey" FOREIGN KEY ("alteradoPor") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

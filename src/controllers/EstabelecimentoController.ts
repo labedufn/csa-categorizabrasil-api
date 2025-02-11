@@ -63,12 +63,35 @@ export class EstabelecimentoController {
         alteradoPor,
       };
 
-      const editarEstabelecimentoService = new EstabelecimentoService();
-      const estabelecimentoAtualizado = await editarEstabelecimentoService.editarEstabelecimento(
+      const estabelecimentoAtualizado = await estabelecimentoService.editarEstabelecimento(
         estabelecimentoId,
         dadosParaAtualizar,
       );
       reply.send({ estabelecimentoAtualizado });
+    } catch (error) {
+      reply.status(400).send({ error: (error as Error).message });
+    }
+  }
+
+  static async listarEstabelecimentos(req: FastifyRequest, reply: FastifyReply) {
+    try {
+      const estabelecimentos = await estabelecimentoService.listarEstabelecimentos();
+      reply.send({ estabelecimentos });
+    } catch (error) {
+      reply.status(400).send({ error: (error as Error).message });
+    }
+  }
+
+  static async desativarEstabelecimento(req: FastifyRequest, reply: FastifyReply) {
+    try {
+      const { id: estabelecimentoId } = req.params as { id: string };
+      const alteradoPor = req.usuario.id;
+
+      const estabelecimentoDesativado = await estabelecimentoService.desativarEstabelecimento(
+        estabelecimentoId,
+        alteradoPor,
+      );
+      reply.send({ estabelecimentoDesativado });
     } catch (error) {
       reply.status(400).send({ error: (error as Error).message });
     }
