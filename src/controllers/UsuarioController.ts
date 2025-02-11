@@ -36,8 +36,48 @@ export class UsuarioController {
 
   static async listarUsuarios(req: FastifyRequest, reply: FastifyReply) {
     try {
-      const usuarios = await service.listarUsuarios();
+      const usuarioLogado = req.usuario;
+      if (!usuarioLogado) {
+        return reply.status(401).send({ message: "Usuário não autenticado" });
+      }
+
+      let usuarios;
+      if (usuarioLogado.tipo === "ADMINISTRADOR") {
+        usuarios = await service.listarUsuarios();
+      } else if (usuarioLogado.tipo === "GESTOR") {
+        usuarios = await service.listarUsuariosPorInstituicao(usuarioLogado.instituicao);
+      } else {
+        return reply.status(403).send({ message: "Acesso negado" });
+      }
       reply.send(usuarios);
+    } catch (error) {
+      reply.status(400).send({ message: (error as Error).message });
+    }
+  }
+
+  static async desativarUsuario(req: FastifyRequest, reply: FastifyReply) {
+    try {
+      const usuarioLogado = req.usuario;
+      if (!usuarioLogado) {
+        return reply.status(401).send({ message: "Usuário não autenticado" });
+      }
+
+      const { id } = req.params as { id: string };
+
+      if (usuarioLogado.tipo === "GESTOR") {
+        const usuarioAlvo = await service.obterUsuarioPorId(id);
+        if (!usuarioAlvo) {
+          return reply.status(404).send({ message: "Usuário não encontrado" });
+        }
+        if (usuarioAlvo.instituicao !== usuarioLogado.instituicao) {
+          return reply.status(403).send({ message: "Acesso negado: usuário não pertence à sua instituição" });
+        }
+      } else if (usuarioLogado.tipo !== "ADMINISTRADOR") {
+        return reply.status(403).send({ message: "Acesso negado" });
+      }
+
+      const resultado = await service.desativarUsuario(id);
+      reply.send(resultado);
     } catch (error) {
       reply.status(400).send({ message: (error as Error).message });
     }

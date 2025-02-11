@@ -31,9 +31,35 @@ export class UsuarioService {
     return { message: "Senha atualizada com sucesso" };
   }
 
-  // Listar todos os usuários (apenas ativos)
   async listarUsuarios() {
     const usuarios = await prisma.usuario.findMany({ where: { ativo: true } });
     return usuarios;
+  }
+
+  async listarUsuariosPorInstituicao(instituicao: string) {
+    const usuarios = await prisma.usuario.findMany({
+      where: {
+        ativo: true,
+        instituicao,
+      },
+    });
+    return usuarios;
+  }
+
+  async obterUsuarioPorId(id: string) {
+    const usuario = await prisma.usuario.findUnique({ where: { id } });
+    return usuario;
+  }
+
+  async desativarUsuario(id: string) {
+    const usuario = await prisma.usuario.findUnique({ where: { id } });
+    if (!usuario) throw new Error("Usuário não encontrado");
+
+    await prisma.usuario.update({
+      where: { id },
+      data: { ativo: false },
+    });
+
+    return { message: "Usuário desativado com sucesso" };
   }
 }
