@@ -1,3 +1,4 @@
+// src/services/ConviteService.ts
 import { generateInvitationEmailTemplate } from "../templates/convite.template";
 import { EmailService } from "./EmailService";
 import { prisma } from "../config/prisma";
@@ -41,5 +42,23 @@ export class ConviteService {
     });
 
     return invitationLink;
+  }
+
+  async validarConvite(token: string): Promise<boolean> {
+    const convite = await prisma.convite.findUnique({ where: { token } });
+    if (!convite) return false;
+    if (convite.expiraEm < new Date() || convite.usado) return false;
+    return true;
+  }
+
+  async getConvite(token: string) {
+    return await prisma.convite.findUnique({ where: { token } });
+  }
+
+  async marcarConviteComoUsado(token: string): Promise<void> {
+    await prisma.convite.update({
+      where: { token },
+      data: { usado: true },
+    });
   }
 }

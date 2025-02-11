@@ -30,6 +30,7 @@ export async function authMiddleware(req: FastifyRequest, reply: FastifyReply) {
       id: usuarioFromDb.id,
       email: usuarioFromDb.email,
       tipo: usuarioFromDb.tipo as "ADMINISTRADOR" | "GESTOR" | "AVALIADOR",
+      instituicao: usuarioFromDb.instituicao,
     };
   } catch (error) {
     console.error("Erro no authMiddleware:", error);
