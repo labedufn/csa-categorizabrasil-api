@@ -8,17 +8,17 @@ datasource db {
 }
 
 model Usuario {
-  id          String  @id @default(uuid())
-  nome        String
-  sobrenome   String
-  cpf         String  @unique
-  email       String  @unique
-  senha       String
-  instituicao String
-  tipo        String
-  ativo       Boolean @default(true)
-  criadoEm   DateTime @default(now()) @map("criado_em")
-  atualizadoEm   DateTime @updatedAt @map("atualizado_em")
+  id           String   @id @default(uuid())
+  nome         String
+  sobrenome    String
+  cpf          String   @unique
+  email        String   @unique
+  senha        String
+  instituicao  String
+  tipo         String
+  ativo        Boolean  @default(true)
+  criadoEm     DateTime @default(now()) @map("criado_em")
+  atualizadoEm DateTime @updatedAt @map("atualizado_em")
 
   redefinirSenhas RedefinirSenha[]
 }
@@ -28,20 +28,35 @@ model Convite {
   token       String   @unique
   criadorId   String
   email       String
-  instituicao String   
-  tipo        String   
+  instituicao String
+  tipo        String
   criadoEm    DateTime @default(now())
-  expiraEm   DateTime
+  expiraEm    DateTime
   usado       Boolean  @default(false)
 }
 
 model RedefinirSenha {
   id        String   @id @default(uuid())
   token     String   @unique
-  usuarioId    String
-  expiraEm DateTime
+  usuarioId String
+  expiraEm  DateTime
   usado     Boolean  @default(false)
   criadoEm  DateTime @default(now())
 
-  usuario      Usuario  @relation(fields: [usuarioId], references: [id])
+  usuario Usuario @relation(fields: [usuarioId], references: [id])
+}
+
+model Estabelecimento {
+  id                            String   @id @default(uuid())
+  nome                          String
+  cnpj                          String   @unique
+  cnae                          String
+  endereco                      String
+  pessoalOcupado                Int
+  numeroRefeicoes               Int
+  possuiAlvaraSanitario         Int
+  possuiResponsavelBoasPraticas Int
+  alteradoPor                   String
+  ativo                         Boolean  @default(true)
+  dataAlteracao                 DateTime @updatedAt
 }
