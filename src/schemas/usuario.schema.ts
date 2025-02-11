@@ -27,3 +27,7 @@ export const listarUsuariosSchema = z.array(
     ativo: z.boolean(),
   }),
 );
+
+export const desativarUsuarioSchema = z.object({
+  ativo: z.boolean(),
+});

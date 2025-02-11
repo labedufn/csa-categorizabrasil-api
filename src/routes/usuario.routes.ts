@@ -1,4 +1,9 @@
-import { atualizarUsuarioSchema, atualizarSenhaSchema, listarUsuariosSchema } from "../schemas/usuario.schema";
+import {
+  atualizarUsuarioSchema,
+  atualizarSenhaSchema,
+  listarUsuariosSchema,
+  desativarUsuarioSchema,
+} from "../schemas/usuario.schema";
 import { UsuarioController } from "../controllers/UsuarioController";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { roleMiddleware } from "../middlewares/role.middleware";
@@ -14,7 +19,8 @@ export async function usuarioRoutes(app: FastifyInstance) {
         tags: ["Usuário"],
         security: [{ bearerAuth: [] }],
         headers: authHeadersSchema,
-        description: "Lista todos os usuários. É necessário informar o token Bearer no header 'Authorization'.",
+        description:
+          "Lista todos os usuários. É necessário informar o token Bearer no header 'Authorization' (ADMINISTRADOR pode listar todos os usuários, já GESTOR pode listar apenas os pertencentes a mesma instuição).",
         response: { 200: listarUsuariosSchema },
       },
     },
@@ -38,9 +44,26 @@ export async function usuarioRoutes(app: FastifyInstance) {
   );
 
   app.put(
-    "/api/usuario/senha",
+    "/api/usuario/desativar",
     {
       preHandler: [authMiddleware, roleMiddleware(["ADMINISTRADOR", "GESTOR"])],
+      schema: {
+        tags: ["Usuário"],
+        security: [{ bearerAuth: [] }],
+        headers: authHeadersSchema,
+        description:
+          "Desativa o usuário. É necessário informar o token Bearer no header 'Authorization' (ADMINISTRADOR pode desativar qualquer usuário, já GESTOR apenas os que pertencem a sua instuição).",
+        body: desativarUsuarioSchema,
+        response: { 200: desativarUsuarioSchema },
+      },
+    },
+    UsuarioController.desativarUsuario,
+  );
+
+  app.put(
+    "/api/usuario/senha",
+    {
+      preHandler: authMiddleware,
       schema: {
         tags: ["Usuário"],
         security: [{ bearerAuth: [] }],
