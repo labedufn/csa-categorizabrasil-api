@@ -18,7 +18,7 @@ export async function usuarioRoutes(app: FastifyInstance) {
     {
       preHandler: authMiddleware,
       schema: {
-        tags: ["Usuário"],
+        tags: ["Usuários"],
         security: [{ bearerAuth: [] }],
         headers: authHeadersSchema,
         description:
@@ -30,11 +30,11 @@ export async function usuarioRoutes(app: FastifyInstance) {
   );
 
   app.put(
-    "/api/usuario/atualizar",
+    "/api/usuarios/atualizar",
     {
       preHandler: authMiddleware,
       schema: {
-        tags: ["Usuário"],
+        tags: ["Usuários"],
         security: [{ bearerAuth: [] }],
         headers: authHeadersSchema,
         description: "Atualiza os dados do usuário. É necessário informar o token Bearer no header 'Authorization'.",
@@ -46,11 +46,11 @@ export async function usuarioRoutes(app: FastifyInstance) {
   );
 
   app.put(
-    "/api/usuario/desativar/:id",
+    "/api/usuarios/desativar/:id",
     {
       preHandler: [authMiddleware, roleMiddleware(["ADMINISTRADOR", "GESTOR"])],
       schema: {
-        tags: ["Usuário"],
+        tags: ["Usuários"],
         security: [{ bearerAuth: [] }],
         headers: authHeadersSchema,
         description:
@@ -63,11 +63,11 @@ export async function usuarioRoutes(app: FastifyInstance) {
   );
 
   app.put(
-    "/api/usuario/senha",
+    "/api/usuarios/senha",
     {
       preHandler: authMiddleware,
       schema: {
-        tags: ["Usuário"],
+        tags: ["Usuários"],
         security: [{ bearerAuth: [] }],
         headers: authHeadersSchema,
         description: "Atualiza a senha do usuário. É necessário informar o token Bearer no header 'Authorization'.",
@@ -79,11 +79,11 @@ export async function usuarioRoutes(app: FastifyInstance) {
   );
 
   app.put(
-    "/api/usuario/tipo/:id",
+    "/api/usuarios/tipo/:id",
     {
       preHandler: authMiddleware,
       schema: {
-        tags: ["Usuário"],
+        tags: ["Usuários"],
         security: [{ bearerAuth: [] }],
         body: alterarTipoUsuarioSchema,
         response: {
