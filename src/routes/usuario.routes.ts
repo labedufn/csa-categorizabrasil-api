@@ -3,6 +3,8 @@ import {
   atualizarSenhaSchema,
   listarUsuariosSchema,
   desativarUsuarioSchema,
+  alterarTipoUsuarioSchema,
+  alterarTipoUsuarioResponseSchema,
 } from "../schemas/usuario.schema";
 import { UsuarioController } from "../controllers/UsuarioController";
 import { authMiddleware } from "../middlewares/auth.middleware";
@@ -74,5 +76,21 @@ export async function usuarioRoutes(app: FastifyInstance) {
       },
     },
     UsuarioController.atualizarSenha,
+  );
+
+  app.put(
+    "/api/usuario/:id/tipo",
+    {
+      preHandler: authMiddleware,
+      schema: {
+        tags: ["Usuário"],
+        security: [{ bearerAuth: [] }],
+        body: alterarTipoUsuarioSchema,
+        response: {
+          200: alterarTipoUsuarioResponseSchema,
+        },
+      },
+    },
+    UsuarioController.alterarTipoUsuario,
   );
 }

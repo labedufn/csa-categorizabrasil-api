@@ -12,7 +12,7 @@ export async function redefinirSenhaRoutes(app: FastifyInstance) {
     "/api/auth/request-redefinir-senha",
     {
       schema: {
-        tags: ["Redefinir de Senha"],
+        tags: ["Redefinir Senha"],
         body: requestRedefinirSenhaBodySchema,
         response: {
           200: requestRedefinirSenhaResponseSchema,
@@ -26,7 +26,7 @@ export async function redefinirSenhaRoutes(app: FastifyInstance) {
     "/api/auth/redefinir-senha",
     {
       schema: {
-        tags: ["Redefinir de Senha"],
+        tags: ["Redefinir Senha"],
         body: redefinirSenhaBodySchema,
         response: {
           200: redefinirSenhaResponseSchema,

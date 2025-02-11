@@ -1,9 +1,11 @@
 import { atualizarUsuarioSchema, atualizarSenhaSchema } from "../schemas/usuario.schema";
 import { UsuarioService } from "../services/UsuarioService";
 import { FastifyReply, FastifyRequest } from "fastify";
+import { prisma } from "../config/prisma";
 import { z } from "zod";
 
 const service = new UsuarioService();
+const usuarioService = new UsuarioService();
 
 export class UsuarioController {
   static async editarUsuario(req: FastifyRequest, reply: FastifyReply) {
@@ -78,6 +80,41 @@ export class UsuarioController {
 
       const resultado = await service.desativarUsuario(id);
       reply.send(resultado);
+    } catch (error) {
+      reply.status(400).send({ message: (error as Error).message });
+    }
+  }
+
+  static async alterarTipoUsuario(req: FastifyRequest, reply: FastifyReply) {
+    try {
+      const callingUser = req.usuario;
+      if (!callingUser) {
+        return reply.status(401).send({ message: "Usuário não autenticado" });
+      }
+
+      const targetUserId = (req.params as { id: string }).id;
+      const { novoTipo } = req.body as {
+        novoTipo: "ADMINISTRADOR" | "GESTOR" | "AVALIADOR";
+      };
+
+      const targetUser = await prisma.usuario.findUnique({ where: { id: targetUserId } });
+      if (!targetUser) {
+        return reply.status(404).send({ message: "Usuário não encontrado" });
+      }
+
+      if (callingUser.tipo === "GESTOR") {
+        if (novoTipo === "ADMINISTRADOR") {
+          return reply
+            .status(403)
+            .send({ message: "Gestor não tem permissão para definir o tipo como ADMINISTRADOR." });
+        }
+        if (callingUser.instituicao !== targetUser.instituicao) {
+          return reply.status(403).send({ message: "Você não tem permissão para alterar o tipo deste usuário." });
+        }
+      }
+
+      const updatedUser = await usuarioService.alterarTipoUsuario(targetUserId, novoTipo);
+      reply.send(updatedUser);
     } catch (error) {
       reply.status(400).send({ message: (error as Error).message });
     }

@@ -31,3 +31,18 @@ export const listarUsuariosSchema = z.array(
 export const desativarUsuarioSchema = z.object({
   ativo: z.boolean(),
 });
+
+export const alterarTipoUsuarioSchema = z.object({
+  novoTipo: z.enum(["ADMINISTRADOR", "GESTOR", "AVALIADOR"]),
+});
+
+export const alterarTipoUsuarioResponseSchema = z.object({
+  id: z.string(),
+  nome: z.string(),
+  sobrenome: z.string(),
+  cpf: z.string(),
+  email: z.string().email(),
+  instituicao: z.string(),
+  tipo: z.enum(["ADMINISTRADOR", "GESTOR", "AVALIADOR"]),
+  ativo: z.boolean(),
+});
