@@ -1,6 +1,13 @@
-import { criarEstabelecimentoBodySchema, criarEstabelecimentoResponseSchema } from "../schemas/estabelecimento.schema";
+import {
+  criarEstabelecimentoBodySchema,
+  criarEstabelecimentoResponseSchema,
+  editarEstabelecimentoBodySchema,
+  editarEstabelecimentoResponseSchema,
+} from "../schemas/estabelecimento.schema";
 import { EstabelecimentoController } from "../controllers/EstabelecimentoController";
 import { authMiddleware } from "../middlewares/auth.middleware";
+import { roleMiddleware } from "../middlewares/role.middleware";
+import { authHeadersSchema } from "../schemas/headers.schema";
 import { FastifyInstance } from "fastify";
 
 export async function estabelecimentoRoutes(app: FastifyInstance) {
@@ -9,9 +16,10 @@ export async function estabelecimentoRoutes(app: FastifyInstance) {
     {
       preHandler: authMiddleware,
       schema: {
-        tags: ["Estabelecimento"],
+        tags: ["Estabelecimentos"],
         security: [{ bearerAuth: [] }],
-        description: "Cria um novo estabelecimento. É necessário informar o token Bearer no header 'Authorization'.",
+        headers: authHeadersSchema,
+        description: "Cria um estabelecimento. É necessário informar o token Bearer no header 'Authorization'.",
         body: criarEstabelecimentoBodySchema,
         response: {
           200: criarEstabelecimentoResponseSchema,
@@ -20,6 +28,23 @@ export async function estabelecimentoRoutes(app: FastifyInstance) {
     },
     async (req, reply) => {
       await EstabelecimentoController.criarEstabelecimento(req, reply);
+    },
+  );
+
+  app.put(
+    "/api/estabelecimentos/:id",
+    {
+      preHandler: [authMiddleware, roleMiddleware(["ADMINISTRADOR", "GESTOR"])],
+      schema: {
+        tags: ["Estabelecimentos"],
+        body: editarEstabelecimentoBodySchema,
+        response: {
+          200: editarEstabelecimentoResponseSchema,
+        },
+      },
+    },
+    async (req, reply) => {
+      await EstabelecimentoController.editarEstabelecimento(req, reply);
     },
   );
 }

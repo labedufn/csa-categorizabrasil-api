@@ -20,6 +20,7 @@ model Usuario {
   criadoEm     DateTime @default(now()) @map("criado_em")
   atualizadoEm DateTime @updatedAt @map("atualizado_em")
 
+  estabelecimento Estabelecimento[]
   redefinirSenhas RedefinirSenha[]
 }
 
@@ -59,4 +60,6 @@ model Estabelecimento {
   alteradoPor                   String
   ativo                         Boolean  @default(true)
   dataAlteracao                 DateTime @updatedAt
+
+  usuario Usuario @relation(fields: [alteradoPor], references: [id])
 }

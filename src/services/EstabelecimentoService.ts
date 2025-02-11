@@ -28,8 +28,33 @@ export class EstabelecimentoService {
         possuiResponsavelBoasPraticas: true,
         dataAlteracao: true,
         alteradoPor: true,
+        ativo: true,
       },
     });
     return estabelecimentoCriado;
+  }
+
+  async editarEstabelecimento(id: string, dados: Partial<IEstabelecimento>) {
+    const estabelecimentoAtualizado = await prisma.estabelecimento.update({
+      where: { id },
+      data: {
+        ...dados,
+      },
+      select: {
+        id: true,
+        nome: true,
+        cnpj: true,
+        cnae: true,
+        endereco: true,
+        pessoalOcupado: true,
+        numeroRefeicoes: true,
+        possuiAlvaraSanitario: true,
+        possuiResponsavelBoasPraticas: true,
+        dataAlteracao: true,
+        alteradoPor: true,
+        ativo: true,
+      },
+    });
+    return estabelecimentoAtualizado;
   }
 }
