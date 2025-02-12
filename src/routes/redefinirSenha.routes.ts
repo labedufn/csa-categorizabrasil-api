@@ -3,8 +3,8 @@ import {
   redefinirSenhaResponseSchema,
   requestRedefinirSenhaBodySchema,
   requestRedefinirSenhaResponseSchema,
-} from "../schemas/redefinirSenha.schema";
-import { AuthController } from "../controllers/AuthController";
+} from "@schemas/redefinirSenha.schema";
+import { AuthController } from "@controllers/AuthController";
 import { FastifyInstance } from "fastify";
 
 export async function redefinirSenhaRoutes(app: FastifyInstance) {

@@ -1,7 +1,7 @@
-import { conviteCreateSchema, conviteResponseSchema } from "../schemas/convite.schema";
-import { ConviteController } from "../controllers/ConviteController";
-import { authMiddleware } from "../middlewares/auth.middleware";
-import { roleMiddleware } from "../middlewares/role.middleware";
+import { conviteCreateSchema, conviteResponseSchema } from "@schemas/convite.schema";
+import { ConviteController } from "@controllers/ConviteController";
+import { authMiddleware } from "@middlewares/auth.middleware";
+import { roleMiddleware } from "@middlewares/role.middleware";
 import { FastifyInstance } from "fastify";
 
 export async function conviteRoutes(app: FastifyInstance) {

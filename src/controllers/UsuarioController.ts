@@ -1,7 +1,7 @@
-import { atualizarUsuarioSchema, atualizarSenhaSchema } from "../schemas/usuario.schema";
-import { UsuarioService } from "../services/UsuarioService";
+import { atualizarUsuarioSchema, atualizarSenhaSchema } from "@schemas/usuario.schema";
+import { UsuarioService } from "@services/UsuarioService";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { prisma } from "../config/prisma";
+import { prisma } from "@config/prisma";
 import { z } from "zod";
 
 const service = new UsuarioService();

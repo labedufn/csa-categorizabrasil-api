@@ -1,5 +1,5 @@
-import { conviteCreateSchema, conviteResponseSchema } from "../schemas/convite.schema";
-import { ConviteService } from "../services/ConviteService";
+import { conviteCreateSchema, conviteResponseSchema } from "@schemas/convite.schema";
+import { ConviteService } from "@services/ConviteService";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 

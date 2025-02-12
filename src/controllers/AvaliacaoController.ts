@@ -1,4 +1,4 @@
-import { AvaliacaoService } from "../services/AvaliacaoService";
+import { AvaliacaoService } from "@services/AvaliacaoService";
 import { FastifyRequest } from "fastify/types/request";
 import { FastifyReply } from "fastify/types/reply";
 

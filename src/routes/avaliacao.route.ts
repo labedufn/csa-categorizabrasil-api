@@ -1,7 +1,7 @@
-import { criarAvaliacaoBodySchema, criarAvaliacaoResponseSchema } from "../schemas/avaliacao.schema";
-import { AvaliacaoController } from "../controllers/AvaliacaoController";
-import { authMiddleware } from "../middlewares/auth.middleware";
-import { authHeadersSchema } from "../schemas/headers.schema";
+import { criarAvaliacaoBodySchema, criarAvaliacaoResponseSchema } from "@schemas/avaliacao.schema";
+import { AvaliacaoController } from "@controllers/AvaliacaoController";
+import { authMiddleware } from "@middlewares/auth.middleware";
+import { authHeadersSchema } from "@schemas/headers.schema";
 import { FastifyInstance } from "fastify";
 
 export async function avaliacaoRoutes(app: FastifyInstance) {

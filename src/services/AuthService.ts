@@ -1,6 +1,6 @@
-import { prisma } from "../config/prisma";
-import { Auth } from "../config/auth";
-import bcrypt from "bcryptjs";
+import { compare, hash } from "bcryptjs";
+import { prisma } from "@config/prisma";
+import { Auth } from "@config/auth";
 
 export class AuthService {
   async registrarUsuario(data: any) {
@@ -14,7 +14,7 @@ export class AuthService {
       throw new Error("E-mail ou CPF já cadastrados");
     }
 
-    const hashedPassword = await bcrypt.hash(data.senha, 10);
+    const hashedPassword = await hash(data.senha, 10);
 
     const usuario = await prisma.usuario.create({
       data: {
@@ -40,7 +40,7 @@ export class AuthService {
 
     if (!usuario) throw erroLogin;
 
-    const senhaValida = await bcrypt.compare(senha, usuario.senha);
+    const senhaValida = await compare(senha, usuario.senha);
     if (!senhaValida) throw erroLogin;
 
     const { senha: _, ...usuarioSemSenha } = usuario;

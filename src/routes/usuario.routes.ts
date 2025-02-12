@@ -5,11 +5,11 @@ import {
   desativarUsuarioSchema,
   alterarTipoUsuarioSchema,
   alterarTipoUsuarioResponseSchema,
-} from "../schemas/usuario.schema";
-import { UsuarioController } from "../controllers/UsuarioController";
-import { authMiddleware } from "../middlewares/auth.middleware";
-import { roleMiddleware } from "../middlewares/role.middleware";
-import { authHeadersSchema } from "../schemas/headers.schema";
+} from "@schemas/usuario.schema";
+import { UsuarioController } from "@controllers/UsuarioController";
+import { authMiddleware } from "@middlewares/auth.middleware";
+import { roleMiddleware } from "@middlewares/role.middleware";
+import { authHeadersSchema } from "@schemas/headers.schema";
 import { FastifyInstance } from "fastify";
 
 export async function usuarioRoutes(app: FastifyInstance) {

@@ -1,5 +1,5 @@
-import { prisma } from "../config/prisma";
-import bcrypt from "bcryptjs";
+import { compare, hash } from "bcryptjs";
+import { prisma } from "@config/prisma";
 
 export class UsuarioService {
   async atualizarUsuario(id: string, data: any) {
@@ -18,10 +18,10 @@ export class UsuarioService {
     const usuario = await prisma.usuario.findUnique({ where: { id } });
     if (!usuario) throw new Error("Usuário não encontrado");
 
-    const senhaValida = await bcrypt.compare(senhaAtual, usuario.senha);
+    const senhaValida = await compare(senhaAtual, usuario.senha);
     if (!senhaValida) throw new Error("Senha atual inválida");
 
-    const novaSenhaHash = await bcrypt.hash(novaSenha, 10);
+    const novaSenhaHash = await hash(novaSenha, 10);
 
     await prisma.usuario.update({
       where: { id },

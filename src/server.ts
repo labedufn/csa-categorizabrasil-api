@@ -1,4 +1,4 @@
-import { app } from "./config/fastify";
+import { app } from "@config/fastify";
 import { routes } from "./routes";
 
 const PORT = Number(process.env.PORT) || 8000;

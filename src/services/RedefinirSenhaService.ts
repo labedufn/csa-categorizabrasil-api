@@ -1,8 +1,8 @@
-import { generatePasswordResetEmailTemplate } from "../templates/redefinirSenha.template";
+import { generatePasswordResetEmailTemplate } from "@templates/redefinirSenha.template";
 import { EmailService } from "./EmailService";
-import { prisma } from "../config/prisma";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
+import { sign, verify } from "jsonwebtoken";
+import { prisma } from "@config/prisma";
+import { hash } from "bcryptjs";
 
 export class RedefinirSenhaService {
   private emailService = new EmailService();
@@ -19,7 +19,7 @@ export class RedefinirSenhaService {
     if (!usuario) return;
 
     const secret = process.env.JWT_SECRET || "supersecret";
-    const token = jwt.sign({ idUsuario: usuario.id }, secret, { expiresIn: "15m" });
+    const token = sign({ idUsuario: usuario.id }, secret, { expiresIn: "15m" });
     const expiraEm = new Date(Date.now() + 15 * 60 * 1000);
 
     await prisma.redefinirSenha.create({
@@ -56,7 +56,7 @@ export class RedefinirSenhaService {
     const secret = process.env.JWT_SECRET || "supersecret";
     let payload: any;
     try {
-      payload = jwt.verify(token, secret);
+      payload = verify(token, secret);
     } catch (error) {
       throw new Error("Token inválido ou expirado");
     }
@@ -66,7 +66,7 @@ export class RedefinirSenhaService {
       throw new Error("Token inválido ou expirado");
     }
 
-    const novaSenhaHash = await bcrypt.hash(novaSenha, 10);
+    const novaSenhaHash = await hash(novaSenha, 10);
     await prisma.usuario.update({
       where: { id: payload.idUsuario },
       data: { senha: novaSenhaHash },

@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { prisma } from "../config/prisma";
-import { Auth } from "../config/auth";
+import { prisma } from "@config/prisma";
+import { Auth } from "@config/auth";
 
 export async function authMiddleware(req: FastifyRequest, reply: FastifyReply) {
   try {

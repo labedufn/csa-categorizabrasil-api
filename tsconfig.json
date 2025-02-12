@@ -7,7 +7,17 @@
     "lib": ["es2023"],
     "module": "node16",
     "target": "es2022",
-
+    "baseUrl": "./",
+    "paths": {
+      "@config/*": ["src/config/*"],
+      "@controllers/*": ["src/controllers/*"],
+      "@interfaces/*": ["src/interfaces/*"],
+      "@middlewares/*": ["src/middlewares/*"],
+      "@schemas/*": ["src/schemas/*"],
+      "@routes/*": ["src/routes/*"],
+      "@services/*": ["src/services/*"],
+      "@templates/*": ["src/templates/*"]
+    },
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,

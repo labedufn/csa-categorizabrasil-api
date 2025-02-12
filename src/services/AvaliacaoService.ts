@@ -1,5 +1,5 @@
-import { IAvaliacao } from "../interfaces/IAvaliacao";
-import { prisma } from "../config/prisma";
+import { IAvaliacao } from "@interfaces/IAvaliacao";
+import { prisma } from "@config/prisma";
 
 export class AvaliacaoService {
   async criarAvaliacao(avaliacao: IAvaliacao) {
@@ -24,6 +24,34 @@ export class AvaliacaoService {
         throw new Error(`Erro ao criar avaliação: ${error.message}`);
       } else {
         throw new Error("Erro ao criar avaliação: erro desconhecido");
+      }
+    }
+  }
+
+  async desativarAvaliacao(idAvaliacao: string) {
+    try {
+      const avaliacaoDesativada = await prisma.avaliacao.update({
+        where: {
+          id: idAvaliacao,
+        },
+        data: {
+          ativo: false,
+        },
+        select: {
+          id: true,
+          idEstabelecimento: true,
+          criadoEm: true,
+          alteradoEm: true,
+          ativo: true,
+        },
+      });
+
+      return avaliacaoDesativada;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(`Erro ao desativar avaliação: ${error.message}`);
+      } else {
+        throw new Error("Erro ao desativar avaliação: erro desconhecido");
       }
     }
   }

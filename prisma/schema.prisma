@@ -22,6 +22,7 @@ model Usuario {
   estabelecimentos Estabelecimento[]
   redefinirSenhas  RedefinirSenha[]
   convites         Convite[]
+  Avaliacao        Avaliacao[]
 }
 
 model Convite {
@@ -149,11 +150,13 @@ model AnaliseQuantitativa {
 }
 
 model Avaliacao {
-  id                  String                @id @default(uuid())
-  idEstabelecimento   String
-  criadoEm            DateTime              @default(now()) @db.Timestamptz(3)
-  alteradoEm          DateTime              @updatedAt @db.Timestamptz(3)
-  ativo               Boolean               @default(true)
+  id                String   @id @default(uuid())
+  idEstabelecimento String
+  criadoPor         String
+  criadoEm          DateTime @default(now()) @db.Timestamptz(3)
+  alteradoEm        DateTime @updatedAt @db.Timestamptz(3)
+  ativo             Boolean  @default(true)
+
   estabelecimento     Estabelecimento       @relation(fields: [idEstabelecimento], references: [id])
   gestores            Gestores[]
   analiseQuantitativa AnaliseQuantitativa[]
@@ -162,4 +165,5 @@ model Avaliacao {
   analiseQualitativa  AnaliseQualitativa[]
   triangulacao        Triangulacao[]
   resultado           Resultado[]
+  usuario             Usuario               @relation(fields: [criadoPor], references: [id])
 }

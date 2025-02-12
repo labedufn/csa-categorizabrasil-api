@@ -1,4 +1,4 @@
-import axios from "axios";
+import { post } from "axios";
 
 interface SendEmailParams {
   to: string;
@@ -8,7 +8,7 @@ interface SendEmailParams {
 
 export class EmailService {
   async sendEmail({ to, subject, html }: SendEmailParams): Promise<void> {
-    await axios.post(
+    await post(
       process.env.EMAIL_API_URL || "http://localhost:3001",
       {
         to,

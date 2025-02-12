@@ -1,5 +1,5 @@
-import { EstabelecimentoService } from "../services/EstabelecimentoService";
-import { IEstabelecimento } from "../interfaces/IEstabelecimento";
+import { EstabelecimentoService } from "@services/EstabelecimentoService";
+import { IEstabelecimento } from "@interfaces/IEstabelecimento";
 import { FastifyRequest, FastifyReply } from "fastify";
 
 const estabelecimentoService = new EstabelecimentoService();

@@ -1,5 +1,5 @@
-import { IEstabelecimento } from "../interfaces/IEstabelecimento";
-import { prisma } from "../config/prisma";
+import { IEstabelecimento } from "@interfaces/IEstabelecimento";
+import { prisma } from "@config/prisma";
 
 export class EstabelecimentoService {
   async criarEstabelecimento(estabelecimento: IEstabelecimento) {
