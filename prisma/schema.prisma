@@ -8,18 +8,17 @@ datasource db {
 }
 
 model Usuario {
-  id           String   @id @default(uuid())
-  nome         String
-  sobrenome    String
-  cpf          String   @unique
-  email        String   @unique
-  senha        String
-  instituicao  String
-  tipo         String
-  ativo        Boolean  @default(true)
-  criadoEm     DateTime @default(now()) @map("criado_em")
-  atualizadoEm DateTime @updatedAt @map("atualizado_em")
-
+  id               String            @id @default(uuid())
+  nome             String
+  sobrenome        String
+  cpf              String            @unique
+  email            String            @unique
+  senha            String
+  instituicao      String
+  tipo             String
+  ativo            Boolean           @default(true)
+  criadoEm         DateTime          @default(now())
+  atualizadoEm     DateTime          @updatedAt
   estabelecimentos Estabelecimento[]
   redefinirSenhas  RedefinirSenha[]
   convites         Convite[]
@@ -28,7 +27,7 @@ model Usuario {
 model Convite {
   id          String   @id @default(uuid())
   token       String   @unique
-  criadorId   String
+  idCriador   String
   email       String
   instituicao String
   tipo        String
@@ -36,18 +35,18 @@ model Convite {
   expiraEm    DateTime
   usado       Boolean  @default(false)
 
-  criador Usuario @relation(fields: [criadorId], references: [id])
+  criador Usuario @relation(fields: [idCriador], references: [id])
 }
 
 model RedefinirSenha {
   id        String   @id @default(uuid())
   token     String   @unique
-  usuarioId String
+  idUsuario String
   expiraEm  DateTime
   usado     Boolean  @default(false)
   criadoEm  DateTime @default(now())
 
-  usuario Usuario @relation(fields: [usuarioId], references: [id])
+  usuario Usuario @relation(fields: [idUsuario], references: [id])
 }
 
 model Estabelecimento {
@@ -56,13 +55,111 @@ model Estabelecimento {
   cnpj                          String   @unique
   cnae                          String
   endereco                      String
+  cidade                        String
+  estado                        String
   pessoalOcupado                Int
   numeroRefeicoes               Int
   possuiAlvaraSanitario         Int
   possuiResponsavelBoasPraticas Int
   alteradoPor                   String
   ativo                         Boolean  @default(true)
-  dataAlteracao                 DateTime @updatedAt
+  alteradoEm                    DateTime @updatedAt
 
-  usuario Usuario @relation(fields: [alteradoPor], references: [id])
+  usuario    Usuario     @relation(fields: [alteradoPor], references: [id])
+  avaliacoes Avaliacao[]
+  Resultado  Resultado[]
+}
+
+model Gestores {
+  id          String    @id @default(uuid())
+  idAvaliacao String
+  criadoEm    DateTime  @default(now()) @db.Timestamptz(3)
+  alteradoEm  DateTime  @updatedAt @db.Timestamptz(3)
+  informacoes String    @db.Text
+  ativo       Boolean   @default(true)
+  avaliacao   Avaliacao @relation(fields: [idAvaliacao], references: [id])
+}
+
+model ManipuladorAlimento {
+  id          String    @id @default(uuid())
+  idAvaliacao String
+  criadoEm    DateTime  @default(now()) @db.Timestamptz(3)
+  alteradoEm  DateTime  @updatedAt @db.Timestamptz(3)
+  informacoes String    @db.Text
+  ativo       Boolean   @default(true)
+  avaliacao   Avaliacao @relation(fields: [idAvaliacao], references: [id])
+
+  analiseQuantitativa AnaliseQuantitativa[]
+}
+
+model ListaVerificacao {
+  id          String    @id @default(uuid())
+  informacoes String    @db.Text
+  idAvaliacao String
+  ativo       Boolean   @default(true)
+  criadoEm    DateTime  @default(now()) @db.Timestamptz(3)
+  alteradoEm  DateTime  @updatedAt @db.Timestamptz(3)
+  avaliacao   Avaliacao @relation(fields: [idAvaliacao], references: [id])
+}
+
+model AnaliseQualitativa {
+  id          String    @id @default(uuid())
+  idAvaliacao String
+  informacoes String    @db.Text
+  criadoEm    DateTime  @default(now()) @db.Timestamptz(3)
+  alteradoEm  DateTime  @updatedAt @db.Timestamptz(3)
+  avaliacao   Avaliacao @relation(fields: [idAvaliacao], references: [id])
+  ativo       Boolean   @default(true)
+}
+
+model Triangulacao {
+  id          String   @id @default(uuid())
+  idAvaliacao String
+  informacoes String   @db.Text
+  criadoEm    DateTime @default(now()) @db.Timestamptz(3)
+  alteradoEm  DateTime @updatedAt @db.Timestamptz(3)
+
+  resultado Resultado[]
+  avaliacao Avaliacao   @relation(fields: [idAvaliacao], references: [id])
+}
+
+model Resultado {
+  id                String          @id @default(uuid())
+  idEstabelecimento String
+  idTriangulacao    String
+  idAvaliacao       String
+  informacoes       String          @db.Text
+  triangulacao      Triangulacao    @relation(fields: [idTriangulacao], references: [id])
+  estabelecimento   Estabelecimento @relation(fields: [idEstabelecimento], references: [id])
+  avaliacao         Avaliacao       @relation(fields: [idAvaliacao], references: [id])
+}
+
+model AnaliseQuantitativa {
+  id                                  String               @id @default(uuid())
+  idAvaliacao                         String
+  caracteristicasSocioDemograficas    String               @db.Text
+  resultadosAvaliacaoQuantitativasCsa String               @db.Text
+  viesOtimista                        String               @db.Text
+  criadoEm                            DateTime             @default(now()) @db.Timestamptz(3)
+  alteradoEm                          DateTime             @updatedAt @db.Timestamptz(3)
+  ativo                               Int                  @default(1)
+  avaliacao                           Avaliacao            @relation(fields: [idAvaliacao], references: [id])
+  manipuladorAlimento                 ManipuladorAlimento? @relation(fields: [manipuladorAlimentoId], references: [id])
+  manipuladorAlimentoId               String?
+}
+
+model Avaliacao {
+  id                  String                @id @default(uuid())
+  idEstabelecimento   String
+  criadoEm            DateTime              @default(now()) @db.Timestamptz(3)
+  alteradoEm          DateTime              @updatedAt @db.Timestamptz(3)
+  ativo               Boolean               @default(true)
+  estabelecimento     Estabelecimento       @relation(fields: [idEstabelecimento], references: [id])
+  gestores            Gestores[]
+  analiseQuantitativa AnaliseQuantitativa[]
+  manipuladorAlimento ManipuladorAlimento[]
+  listaVerificacao    ListaVerificacao[]
+  analiseQualitativa  AnaliseQualitativa[]
+  triangulacao        Triangulacao[]
+  resultado           Resultado[]
 }

@@ -3,6 +3,8 @@ export interface IEstabelecimento {
   cnpj: string;
   cnae: string;
   endereco: string;
+  cidade: string;
+  estado: string;
   pessoalOcupado: number;
   numeroRefeicoes: number;
   possuiAlvaraSanitario: number;

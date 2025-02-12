@@ -7,15 +7,15 @@ import jwt from "jsonwebtoken";
 export class ConviteService {
   private emailService = new EmailService();
 
-  async enviarConvite(criadorId: string, email: string, instituicao: string, tipo: string): Promise<string> {
+  async enviarConvite(idCriador: string, email: string, instituicao: string, tipo: string): Promise<string> {
     const secret = process.env.JWT_SECRET || "supersecret";
-    const token = jwt.sign({ convite: true, criadorId, email, instituicao, tipo }, secret, { expiresIn: "15m" });
+    const token = jwt.sign({ convite: true, idCriador, email, instituicao, tipo }, secret, { expiresIn: "15m" });
     const expiraEm = new Date(Date.now() + 15 * 60 * 1000);
 
     await prisma.convite.create({
       data: {
         token,
-        criadorId,
+        idCriador,
         email,
         instituicao,
         tipo,

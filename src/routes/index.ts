@@ -1,5 +1,6 @@
 import { estabelecimentoRoutes } from "./estabelecimento.routes";
 import { redefinirSenhaRoutes } from "./redefinirSenha.routes";
+import { avaliacaoRoutes } from "./avaliacao.route";
 import { usuarioRoutes } from "./usuario.routes";
 import { conviteRoutes } from "./convite.routes";
 import { authRoutes } from "./auth.routes";
@@ -11,4 +12,5 @@ export async function routes(app: FastifyInstance) {
   await app.register(usuarioRoutes);
   await app.register(conviteRoutes);
   await app.register(estabelecimentoRoutes);
+  await app.register(avaliacaoRoutes);
 }

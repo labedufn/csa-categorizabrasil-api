@@ -19,13 +19,13 @@ export class RedefinirSenhaService {
     if (!usuario) return;
 
     const secret = process.env.JWT_SECRET || "supersecret";
-    const token = jwt.sign({ usuarioId: usuario.id }, secret, { expiresIn: "15m" });
+    const token = jwt.sign({ idUsuario: usuario.id }, secret, { expiresIn: "15m" });
     const expiraEm = new Date(Date.now() + 15 * 60 * 1000);
 
     await prisma.redefinirSenha.create({
       data: {
         token,
-        usuarioId: usuario.id,
+        idUsuario: usuario.id,
         expiraEm,
       },
     });
@@ -68,7 +68,7 @@ export class RedefinirSenhaService {
 
     const novaSenhaHash = await bcrypt.hash(novaSenha, 10);
     await prisma.usuario.update({
-      where: { id: payload.usuarioId },
+      where: { id: payload.idUsuario },
       data: { senha: novaSenhaHash },
     });
 

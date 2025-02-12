@@ -10,8 +10,8 @@ export class ConviteController {
     try {
       const { email, instituicao, tipo } = req.body as z.infer<typeof conviteCreateSchema>;
 
-      const criadorId = req.usuario?.id;
-      if (!criadorId) {
+      const idCriador = req.usuario?.id;
+      if (!idCriador) {
         return reply.status(401).send({ message: "Usuário não autenticado" });
       }
 
@@ -31,7 +31,7 @@ export class ConviteController {
         return reply.status(403).send({ message: "Acesso negado" });
       }
 
-      const link = await conviteService.enviarConvite(criadorId, email, finalInstituicao, tipo);
+      const link = await conviteService.enviarConvite(idCriador, email, finalInstituicao, tipo);
       reply.send({ link });
     } catch (error) {
       reply.status(500).send({ message: (error as Error).message });

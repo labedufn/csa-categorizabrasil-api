@@ -12,6 +12,8 @@ export class EstabelecimentoController {
         cnpj,
         cnae,
         endereco,
+        cidade,
+        estado,
         pessoalOcupado,
         numeroRefeicoes,
         possuiAlvaraSanitario,
@@ -21,6 +23,8 @@ export class EstabelecimentoController {
         cnpj: string;
         cnae: string;
         endereco: string;
+        cidade: string;
+        estado: string;
         pessoalOcupado: number;
         numeroRefeicoes: number;
         possuiAlvaraSanitario: number;
@@ -34,6 +38,8 @@ export class EstabelecimentoController {
         cnpj,
         cnae,
         endereco,
+        cidade,
+        estado,
         pessoalOcupado,
         numeroRefeicoes,
         possuiAlvaraSanitario,

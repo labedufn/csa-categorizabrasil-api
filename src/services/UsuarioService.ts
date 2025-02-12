@@ -63,9 +63,9 @@ export class UsuarioService {
     return { message: "Usuário desativado com sucesso" };
   }
 
-  async alterarTipoUsuario(usuarioId: string, novoTipo: "ADMINISTRADOR" | "GESTOR" | "AVALIADOR") {
+  async alterarTipoUsuario(idUsuario: string, novoTipo: "ADMINISTRADOR" | "GESTOR" | "AVALIADOR") {
     return await prisma.usuario.update({
-      where: { id: usuarioId },
+      where: { id: idUsuario },
       data: { tipo: novoTipo },
     });
   }
