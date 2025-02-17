@@ -2,6 +2,7 @@ import {
   criarAvaliacaoBodySchema,
   criarAvaliacaoResponseSchema,
   desativarAvaliacaoResponseSchema,
+  listarAvaliacoesResponseSchema,
 } from "@schemas/avaliacao.schema";
 import { AvaliacaoController } from "@controllers/AvaliacaoController";
 import { authMiddleware } from "@middlewares/auth.middleware";
@@ -10,6 +11,21 @@ import { authHeadersSchema } from "@schemas/headers.schema";
 import { FastifyInstance } from "fastify";
 
 export async function avaliacaoRoutes(app: FastifyInstance) {
+  app.get(
+    "/api/avaliacoes",
+    {
+      preHandler: authMiddleware,
+      schema: {
+        tags: ["Avaliações"],
+        security: [{ bearerAuth: [] }],
+        headers: authHeadersSchema,
+        description: "Lista todas as avaliações. É necessário informar o token Bearer no header 'Authorization'.",
+        response: { 200: listarAvaliacoesResponseSchema },
+      },
+    },
+    AvaliacaoController.listarAvaliacoes,
+  );
+
   app.post(
     "/api/avaliacoes",
     {

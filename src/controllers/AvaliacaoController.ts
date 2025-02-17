@@ -32,4 +32,14 @@ export class AvaliacaoController {
       reply.status(400).send({ error: (error as Error).message });
     }
   }
+
+  static async listarAvaliacoes(req: FastifyRequest, reply: FastifyReply) {
+    try {
+      const avaliacoes = await avaliacaoService.listarAvaliacoes();
+
+      reply.send({ avaliacoes });
+    } catch (error) {
+      reply.status(400).send({ error: (error as Error).message });
+    }
+  }
 }

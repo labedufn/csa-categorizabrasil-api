@@ -44,6 +44,7 @@ export class AvaliacaoService {
           idEstabelecimento: true,
           criadoEm: true,
           alteradoEm: true,
+          idCriador: true,
           ativo: true,
         },
       });
@@ -54,6 +55,39 @@ export class AvaliacaoService {
         throw new Error(`Erro ao desativar avaliação: ${error.message}`);
       } else {
         throw new Error("Erro ao desativar avaliação: erro desconhecido");
+      }
+    }
+  }
+
+  async listarAvaliacoes() {
+    try {
+      const avaliacoes = await prisma.avaliacao.findMany({
+        where: {
+          ativo: true,
+        },
+        select: {
+          id: true,
+          idEstabelecimento: true,
+          idCriador: true,
+          criadoEm: true,
+          alteradoEm: true,
+          ativo: true,
+          estabelecimento: {
+            select: {
+              nome: true,
+              cidade: true,
+              estado: true,
+            },
+          },
+        },
+      });
+
+      return avaliacoes;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(`Erro ao listar avaliações: ${error.message}`);
+      } else {
+        throw new Error("Erro ao listar avaliações: erro desconhecido");
       }
     }
   }

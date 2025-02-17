@@ -23,3 +23,21 @@ export const desativarAvaliacaoResponseSchema = z.object({
     ativo: z.boolean(),
   }),
 });
+
+export const listarAvaliacoesResponseSchema = z.object({
+  avaliacoes: z.array(
+    z.object({
+      id: z.string(),
+      idEstabelecimento: z.string(),
+      criadoEm: z.preprocess((arg) => (arg instanceof Date ? arg.toISOString() : arg), z.string()),
+      alteradoEm: z.preprocess((arg) => (arg instanceof Date ? arg.toISOString() : arg), z.string()),
+      idCriador: z.string(),
+      ativo: z.boolean(),
+      estabelecimento: z.object({
+        nome: z.string(),
+        cidade: z.string(),
+        estado: z.string(),
+      }),
+    }),
+  ),
+});
