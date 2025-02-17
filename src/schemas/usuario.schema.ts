@@ -33,16 +33,20 @@ export const desativarUsuarioSchema = z.object({
 });
 
 export const alterarTipoUsuarioSchema = z.object({
+  message: z.string(),
   novoTipo: z.enum(["ADMINISTRADOR", "GESTOR", "AVALIADOR"]),
 });
 
 export const alterarTipoUsuarioResponseSchema = z.object({
-  id: z.string(),
-  nome: z.string(),
-  sobrenome: z.string(),
-  cpf: z.string(),
-  email: z.string().email(),
-  instituicao: z.string(),
-  tipo: z.enum(["ADMINISTRADOR", "GESTOR", "AVALIADOR"]),
-  ativo: z.boolean(),
+  message: z.string(),
+  usuario: z.object({
+    id: z.string(),
+    nome: z.string(),
+    sobrenome: z.string(),
+    cpf: z.string(),
+    email: z.string(),
+    instituicao: z.string(),
+    tipo: z.enum(["ADMINISTRADOR", "GESTOR", "AVALIADOR"]),
+    ativo: z.boolean(),
+  }),
 });

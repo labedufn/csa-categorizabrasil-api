@@ -68,7 +68,7 @@ export async function estabelecimentoRoutes(app: FastifyInstance) {
   );
 
   app.put(
-    "/api/estabelecimentos/desativar/:id",
+    "/api/estabelecimentos/:id/desativar",
     {
       preHandler: [authMiddleware, roleMiddleware(["ADMINISTRADOR", "GESTOR"])],
       schema: {

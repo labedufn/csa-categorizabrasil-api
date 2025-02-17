@@ -3,6 +3,7 @@ import { RedefinirSenhaService } from "@services/RedefinirSenhaService";
 import { ConviteService } from "@services/ConviteService";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { AuthService } from "@services/AuthService";
+import { IUsuario } from "@interfaces/IUsuario";
 import { z } from "zod";
 
 const authService = new AuthService();
@@ -15,14 +16,19 @@ export class AuthController {
       const usuario = await authService.registrarUsuario(req.body);
       reply.status(201).send(usuario);
     } catch (error) {
-      const errorMessage = (error as Error).message;
-      reply.status(500).send({ message: "Erro ao registrar usuário", error: errorMessage });
+      reply.status(500).send({
+        message: "Erro ao registrar usuário",
+        error: (error as Error).message,
+      });
     }
   }
 
-  static async registrarComConvite(req: FastifyRequest, reply: FastifyReply) {
+  static async registrarComConvite(
+    req: FastifyRequest<{ Body: z.infer<typeof registrarComConviteSchema> }>,
+    reply: FastifyReply,
+  ) {
     try {
-      const { conviteToken, nome, sobrenome, cpf, senha } = req.body as z.infer<typeof registrarComConviteSchema>;
+      const { conviteToken, nome, sobrenome, cpf, senha } = req.body;
 
       const convite = await conviteService.getConvite(conviteToken);
       if (!convite) {
@@ -32,18 +38,17 @@ export class AuthController {
         return reply.status(400).send({ message: "Convite inválido ou expirado" });
       }
 
-      const dadosRegistro = {
+      const dadosRegistro: IUsuario = {
         nome,
         sobrenome,
         cpf,
         senha,
         email: convite.email,
         instituicao: convite.instituicao,
-        tipo: convite.tipo,
+        tipo: convite.tipo as "ADMINISTRADOR" | "GESTOR" | "AVALIADOR",
       };
 
       const resultado = await authService.registrarUsuario(dadosRegistro);
-
       await conviteService.marcarConviteComoUsado(conviteToken);
 
       reply.status(201).send(resultado);
@@ -66,7 +71,9 @@ export class AuthController {
     try {
       const { email } = req.body as { email: string };
       await redefinirSenhaService.solicitarRedefinirSenha(email);
-      reply.send({ message: "Se um usuário com este email existir, um link de redefinição foi enviado." });
+      reply.send({
+        message: "Se um usuário com este email existir, um link de redefinição foi enviado.",
+      });
     } catch (error) {
       reply.status(500).send({ message: (error as Error).message });
     }

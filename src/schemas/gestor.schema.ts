@@ -65,6 +65,7 @@ const sistemasGestaoSchema = z.object({
 });
 
 export const gestorSchema = z.object({
+  message: z.string(),
   dadosIndividuais: dadosIndividuaisSchema,
   conhecimento: conhecimentoSchema,
   comprometimentoAfetivo: comprometimentoAfetivoSchema,
@@ -75,7 +76,7 @@ export const gestorSchema = z.object({
   idAvaliacao: z.string(),
 });
 
-export const gestorBodySchema = gestorSchema.omit({ idAvaliacao: true });
+export const gestorBodySchema = gestorSchema.omit({ idAvaliacao: true, message: true });
 
 export const gestoresPorAvaliacaoSchema = z.object({
   gestores: z.array(gestorBodySchema),

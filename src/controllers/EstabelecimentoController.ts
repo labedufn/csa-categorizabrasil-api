@@ -7,49 +7,12 @@ const estabelecimentoService = new EstabelecimentoService();
 export class EstabelecimentoController {
   static async criarEstabelecimento(req: FastifyRequest, reply: FastifyReply) {
     try {
-      const {
-        nome,
-        cnpj,
-        cnae,
-        endereco,
-        cidade,
-        estado,
-        pessoalOcupado,
-        numeroRefeicoes,
-        possuiAlvaraSanitario,
-        possuiResponsavelBoasPraticas,
-      } = req.body as {
-        nome: string;
-        cnpj: string;
-        cnae: string;
-        endereco: string;
-        cidade: string;
-        estado: string;
-        pessoalOcupado: number;
-        numeroRefeicoes: number;
-        possuiAlvaraSanitario: number;
-        possuiResponsavelBoasPraticas: number;
-      };
-
-      const alteradoPor = req.usuario.id;
-
       const novoEstabelecimento: IEstabelecimento = {
-        nome,
-        cnpj,
-        cnae,
-        endereco,
-        cidade,
-        estado,
-        pessoalOcupado,
-        numeroRefeicoes,
-        possuiAlvaraSanitario,
-        possuiResponsavelBoasPraticas,
-        alteradoPor,
-        ativo: true,
+        ...(req.body as IEstabelecimento),
+        alteradoPor: req.usuario.id,
       };
 
       const estabelecimentoCriado = await estabelecimentoService.criarEstabelecimento(novoEstabelecimento);
-
       reply.send({ estabelecimentoCriado });
     } catch (error) {
       reply.status(400).send({ error: (error as Error).message });
@@ -60,26 +23,23 @@ export class EstabelecimentoController {
     try {
       const { id: estabelecimentoId } = req.params as { id: string };
 
-      const dadosEnviados = req.body as Partial<IEstabelecimento>;
-
-      const alteradoPor = req.usuario.id;
-
       const dadosParaAtualizar: Partial<IEstabelecimento> = {
-        ...dadosEnviados,
-        alteradoPor,
+        ...(req.body as Partial<IEstabelecimento>),
+        alteradoPor: req.usuario.id,
       };
 
       const estabelecimentoAtualizado = await estabelecimentoService.editarEstabelecimento(
         estabelecimentoId,
         dadosParaAtualizar,
       );
+
       reply.send({ estabelecimentoAtualizado });
     } catch (error) {
       reply.status(400).send({ error: (error as Error).message });
     }
   }
 
-  static async listarEstabelecimentos(req: FastifyRequest, reply: FastifyReply) {
+  static async listarEstabelecimentos(_req: FastifyRequest, reply: FastifyReply) {
     try {
       const estabelecimentos = await estabelecimentoService.listarEstabelecimentos();
       reply.send({ estabelecimentos });
@@ -97,6 +57,7 @@ export class EstabelecimentoController {
         estabelecimentoId,
         alteradoPor,
       );
+
       reply.send({ estabelecimentoDesativado });
     } catch (error) {
       reply.status(400).send({ error: (error as Error).message });

@@ -15,6 +15,7 @@ export const criarEstabelecimentoBodySchema = z.object({
 });
 
 export const criarEstabelecimentoResponseSchema = z.object({
+  message: z.string(),
   estabelecimentoCriado: z.object({
     id: z.string(),
     nome: z.string(),
@@ -35,6 +36,7 @@ export const editarEstabelecimentoBodySchema = criarEstabelecimentoBodySchema.pa
 
 export const editarEstabelecimentoResponseSchema = z
   .object({
+    message: z.string(),
     estabelecimentoAtualizado: z
       .object({
         id: z.string(),
@@ -80,20 +82,5 @@ export const desativarEstabelecimentoBodySchema = z.object({
 });
 
 export const desativarEstabelecimentoResponseSchema = z.object({
-  estabelecimentoDesativado: z.object({
-    id: z.string(),
-    nome: z.string(),
-    cnpj: z.string(),
-    cnae: z.string(),
-    endereco: z.string(),
-    cidade: z.string(),
-    estado: z.string(),
-    pessoalOcupado: z.number(),
-    numeroRefeicoes: z.number(),
-    possuiAlvaraSanitario: z.number(),
-    possuiResponsavelBoasPraticas: z.number(),
-    alteradoEm: z.preprocess((arg) => (arg instanceof Date ? arg.toISOString() : arg), z.string()),
-    alteradoPor: z.string(),
-    ativo: z.boolean(),
-  }),
+  message: z.string(),
 });

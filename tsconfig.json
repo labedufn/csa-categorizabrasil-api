@@ -16,7 +16,8 @@
       "@schemas/*": ["src/schemas/*"],
       "@routes/*": ["src/routes/*"],
       "@services/*": ["src/services/*"],
-      "@templates/*": ["src/templates/*"]
+      "@templates/*": ["src/templates/*"],
+      "@utils/*": ["src/utils/*"],
     },
     "strict": true,
     "esModuleInterop": true,

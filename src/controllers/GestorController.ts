@@ -9,14 +9,11 @@ export class GestorController {
     try {
       const { idAvaliacao } = req.params as { idAvaliacao: string };
 
-      const gestorData = req.body as Omit<IGestor, "idAvaliacao">;
-
-      const gestorCompleto: IGestor = {
-        ...gestorData,
+      const gestorCriado = await gestorService.criarGestor(idAvaliacao, {
+        ...(req.body as IGestor),
         idAvaliacao,
-      };
+      });
 
-      const gestorCriado = await gestorService.criarGestor(idAvaliacao, gestorCompleto);
       reply.send({ gestorCriado });
     } catch (error) {
       reply.status(400).send({ error: (error as Error).message });
@@ -26,8 +23,8 @@ export class GestorController {
   static async buscarGestoresPorAvaliacao(req: FastifyRequest, reply: FastifyReply) {
     try {
       const { idAvaliacao } = req.params as { idAvaliacao: string };
-
       const gestores = await gestorService.buscarGestoresPorAvaliacao(idAvaliacao);
+
       reply.send({ gestores });
     } catch (error) {
       reply.status(400).send({ error: (error as Error).message });
@@ -37,8 +34,8 @@ export class GestorController {
   static async buscarGestorPorId(req: FastifyRequest, reply: FastifyReply) {
     try {
       const { idGestor } = req.params as { idGestor: string };
-
       const gestor = await gestorService.buscarGestorPorId(idGestor);
+
       reply.send({ gestor });
     } catch (error) {
       reply.status(400).send({ error: (error as Error).message });
@@ -48,10 +45,10 @@ export class GestorController {
   static async editarGestor(req: FastifyRequest, reply: FastifyReply) {
     try {
       const { idGestor } = req.params as { idGestor: string };
-
       const gestorData = req.body as IGestor;
 
       const gestorAtualizado = await gestorService.editarGestor(idGestor, gestorData);
+
       reply.send({ gestorAtualizado });
     } catch (error) {
       reply.status(400).send({ error: (error as Error).message });
@@ -61,8 +58,8 @@ export class GestorController {
   static async deletarGestor(req: FastifyRequest, reply: FastifyReply) {
     try {
       const { idGestor } = req.params as { idGestor: string };
-
       await gestorService.deletarGestor(idGestor);
+
       reply.send({ message: "Gestor deletado com sucesso." });
     } catch (error) {
       reply.status(400).send({ error: (error as Error).message });

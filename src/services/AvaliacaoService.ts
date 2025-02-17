@@ -1,94 +1,54 @@
+import { throwHandledError } from "@utils/throwHandledError";
 import { IAvaliacao } from "@interfaces/IAvaliacao";
 import { prisma } from "@config/prisma";
 
 export class AvaliacaoService {
+  /**
+   * Cria uma nova avaliação.
+   * @param avaliacao - Os dados da avaliação.
+   * @param idUsuario - O identificador do usuário que criou a avaliação.
+   * @returns A avaliação criada.
+   */
   async criarAvaliacao(avaliacao: IAvaliacao, idUsuario: string) {
     try {
-      const avaliacaoCriada = await prisma.avaliacao.create({
+      return await prisma.avaliacao.create({
         data: {
-          idEstabelecimento: avaliacao.idEstabelecimento,
-          ativo: true,
+          ...avaliacao,
           idCriador: idUsuario,
         },
-        select: {
-          id: true,
-          idEstabelecimento: true,
-          idCriador: true,
-          criadoEm: true,
-          alteradoEm: true,
-          ativo: true,
-        },
       });
-
-      return avaliacaoCriada;
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(`Erro ao criar avaliação: ${error.message}`);
-      } else {
-        throw new Error("Erro ao criar avaliação: erro desconhecido");
-      }
+      throwHandledError("Erro ao criar avaliação", error);
     }
   }
 
-  async desativarAvaliacao(idAvaliacao: string) {
-    try {
-      const avaliacaoDesativada = await prisma.avaliacao.update({
-        where: {
-          id: idAvaliacao,
-        },
-        data: {
-          ativo: false,
-        },
-        select: {
-          id: true,
-          idEstabelecimento: true,
-          criadoEm: true,
-          alteradoEm: true,
-          idCriador: true,
-          ativo: true,
-        },
-      });
-
-      return avaliacaoDesativada;
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(`Erro ao desativar avaliação: ${error.message}`);
-      } else {
-        throw new Error("Erro ao desativar avaliação: erro desconhecido");
-      }
-    }
-  }
-
+  /**
+   * Lista todas as avaliações ativas.
+   * @returns As avaliações ativas.
+   */
   async listarAvaliacoes() {
     try {
-      const avaliacoes = await prisma.avaliacao.findMany({
-        where: {
-          ativo: true,
-        },
-        select: {
-          id: true,
-          idEstabelecimento: true,
-          idCriador: true,
-          criadoEm: true,
-          alteradoEm: true,
-          ativo: true,
-          estabelecimento: {
-            select: {
-              nome: true,
-              cidade: true,
-              estado: true,
-            },
-          },
-        },
+      return await prisma.avaliacao.findMany({
+        where: { ativo: true },
       });
-
-      return avaliacoes;
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(`Erro ao listar avaliações: ${error.message}`);
-      } else {
-        throw new Error("Erro ao listar avaliações: erro desconhecido");
-      }
+      throwHandledError("Erro ao listar avaliações", error);
+    }
+  }
+
+  /**
+   * Desativa uma avaliação.
+   * @param idAvaliacao - O identificador da avaliação.
+   * @returns A avaliação desativada.
+   */
+  async desativarAvaliacao(idAvaliacao: string) {
+    try {
+      return await prisma.avaliacao.update({
+        where: { id: idAvaliacao },
+        data: { ativo: false },
+      });
+    } catch (error) {
+      throwHandledError("Erro ao desativar avaliação", error);
     }
   }
 }
