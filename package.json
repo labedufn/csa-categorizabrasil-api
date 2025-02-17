@@ -4,15 +4,11 @@
   "main": "server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "dev:docker": "docker compose -f docker-compose.yml up",
+    "dev:docker": "docker compose up -d",
     "dev:migrate": "npx prisma migrate dev --name init",
     "seed": "node prisma/seed.js",
     "criar:usuario": "node src/scripts/criarUsuario.js"
   },
-  "prisma": {
-    "seed": "node prisma/seed.ts"
-  },
-  "keywords": [],
   "author": "Mauricio Pereira Braga",
   "license": "MIT",
   "description": "CSA - Cultura de Segurança dos Alimentos | API",
