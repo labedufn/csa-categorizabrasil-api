@@ -1,6 +1,11 @@
-import { criarAvaliacaoBodySchema, criarAvaliacaoResponseSchema } from "@schemas/avaliacao.schema";
+import {
+  criarAvaliacaoBodySchema,
+  criarAvaliacaoResponseSchema,
+  desativarAvaliacaoResponseSchema,
+} from "@schemas/avaliacao.schema";
 import { AvaliacaoController } from "@controllers/AvaliacaoController";
 import { authMiddleware } from "@middlewares/auth.middleware";
+import { roleMiddleware } from "@middlewares/role.middleware";
 import { authHeadersSchema } from "@schemas/headers.schema";
 import { FastifyInstance } from "fastify";
 
@@ -22,6 +27,25 @@ export async function avaliacaoRoutes(app: FastifyInstance) {
     },
     async (req, reply) => {
       await AvaliacaoController.criarAvaliacao(req, reply);
+    },
+  );
+
+  app.put(
+    "/api/avaliacoes/desativar/:id",
+    {
+      preHandler: [authMiddleware, roleMiddleware(["ADMINISTRADOR", "GESTOR"])],
+      schema: {
+        tags: ["Avaliações"],
+        security: [{ bearerAuth: [] }],
+        headers: authHeadersSchema,
+        description: "Desativa uma avaliação. É necessário informar o token Bearer no header 'Authorization'.",
+        response: {
+          200: desativarAvaliacaoResponseSchema,
+        },
+      },
+    },
+    async (req, reply) => {
+      await AvaliacaoController.desativarAvaliacao(req, reply);
     },
   );
 }

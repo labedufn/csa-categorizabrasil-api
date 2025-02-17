@@ -20,4 +20,16 @@ export class AvaliacaoController {
       reply.status(400).send({ error: (error as Error).message });
     }
   }
+
+  static async desativarAvaliacao(req: FastifyRequest, reply: FastifyReply) {
+    try {
+      const { id } = req.params as { id: string };
+
+      const avaliacaoDesativada = await avaliacaoService.desativarAvaliacao(id);
+
+      reply.send({ avaliacaoDesativada });
+    } catch (error) {
+      reply.status(400).send({ error: (error as Error).message });
+    }
+  }
 }

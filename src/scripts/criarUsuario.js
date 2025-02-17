@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("=== Criar Novo Usuário ===");
+  console.log("--- Criar Novo Usuário ---");
 
   const nome = readline.question("Nome: ");
   const sobrenome = readline.question("Sobrenome: ");
@@ -13,7 +13,7 @@ async function main() {
   const email = readline.question("Email: ");
   const senha = readline.question("Senha: ", { hideEchoBack: true });
   const instituicao = readline.question("Instituição: ");
-  const tipo = readline.question("Tipo (ADMINISTRADOR/GESTOR/USUARIO): ");
+  const tipo = readline.question("Tipo (ADMINISTRADOR/GESTOR/AVALIADOR): ");
 
   const hashSenha = await bcrypt.hash(senha, 10);
 
