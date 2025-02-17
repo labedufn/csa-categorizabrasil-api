@@ -37,4 +37,48 @@ export class GestorService {
 
     return gestorAtualizado;
   }
+
+  /**
+   * Busca um Gestor pelo ID.
+   * @param idGestor - O identificador do gestor.
+   * @returns O gestor encontrado.
+   */
+  async buscarGestorPorId(idGestor: string) {
+    const gestor = await prisma.gestores.findUnique({
+      where: {
+        id: idGestor,
+      },
+    });
+
+    return gestor;
+  }
+
+  /**
+   * Deleta um Gestor pelo ID.
+   * @param idGestor - O identificador do gestor.
+   */
+  async deletarGestor(idGestor: string) {
+    await prisma.gestores.delete({
+      where: {
+        id: idGestor,
+      },
+    });
+
+    return;
+  }
+
+  /**
+   * Busca todos os Gestores de uma Avaliação.
+   * @param idAvaliacao - O identificador da avaliação.
+   * @returns Todos os gestores encontrados.
+   */
+  async buscarGestoresPorAvaliacao(idAvaliacao: string) {
+    const gestores = await prisma.gestores.findMany({
+      where: {
+        idAvaliacao,
+      },
+    });
+
+    return gestores;
+  }
 }

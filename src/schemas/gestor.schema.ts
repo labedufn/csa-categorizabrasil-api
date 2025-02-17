@@ -76,3 +76,8 @@ export const gestorSchema = z.object({
 });
 
 export const gestorBodySchema = gestorSchema.omit({ idAvaliacao: true });
+
+export const gestoresPorAvaliacaoSchema = z.object({
+  gestores: z.array(gestorBodySchema),
+  idAvaliacao: z.string(),
+});
