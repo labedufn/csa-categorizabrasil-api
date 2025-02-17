@@ -47,7 +47,7 @@ export async function avaliacaoRoutes(app: FastifyInstance) {
   );
 
   app.put(
-    "/api/avaliacoes/desativar/:id",
+    "/api/avaliacoes/:id/desativar",
     {
       preHandler: [authMiddleware, roleMiddleware(["ADMINISTRADOR", "GESTOR"])],
       schema: {

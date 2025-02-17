@@ -22,4 +22,17 @@ export class GestorController {
       reply.status(400).send({ error: (error as Error).message });
     }
   }
+
+  static async editarGestor(req: FastifyRequest, reply: FastifyReply) {
+    try {
+      const { idGestor } = req.params as { idGestor: string };
+
+      const gestorData = req.body as IGestor;
+
+      const gestorAtualizado = await gestorService.editarGestor(idGestor, gestorData);
+      reply.send({ gestorAtualizado });
+    } catch (error) {
+      reply.status(400).send({ error: (error as Error).message });
+    }
+  }
 }

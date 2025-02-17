@@ -22,4 +22,24 @@ export async function gestorRoutes(app: FastifyInstance) {
     },
     GestorController.criarGestor,
   );
+
+  app.put(
+    "/api/avaliacoes/gestores/:id/editar",
+    {
+      preHandler: authMiddleware,
+      schema: {
+        tags: ["Gestores"],
+        security: [{ bearerAuth: [] }],
+        headers: authHeadersSchema,
+        description: "Edita um gestor. É necessário informar o token Bearer no header 'Authorization'.",
+        body: gestorBodySchema,
+        response: {
+          200: gestorBodySchema,
+        },
+      },
+    },
+    async (req, reply) => {
+      await GestorController.editarGestor(req, reply);
+    },
+  );
 }
