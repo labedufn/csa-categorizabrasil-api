@@ -7,7 +7,7 @@ export const loginSchema = z.object({
 
 export const loginResponseSchema = z.object({
   usuario: z.object({
-    id: z.string().uuid(),
+    id: z.string(),
     nome: z.string(),
     sobrenome: z.string(),
     cpf: z.string(),

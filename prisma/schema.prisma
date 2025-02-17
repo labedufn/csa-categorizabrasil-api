@@ -3,12 +3,12 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model Usuario {
-  id               String            @id @default(uuid())
+  id               String            @id @default(auto()) @map("_id") @db.ObjectId
   nome             String
   sobrenome        String
   cpf              String            @unique
@@ -26,9 +26,9 @@ model Usuario {
 }
 
 model Convite {
-  id          String   @id @default(uuid())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   token       String   @unique
-  idCriador   String
+  idCriador   String   @db.ObjectId
   email       String
   instituicao String
   tipo        String
@@ -40,9 +40,9 @@ model Convite {
 }
 
 model RedefinirSenha {
-  id        String   @id @default(uuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   token     String   @unique
-  idUsuario String
+  idUsuario String   @db.ObjectId
   expiraEm  DateTime
   usado     Boolean  @default(false)
   criadoEm  DateTime @default(now())
@@ -51,7 +51,7 @@ model RedefinirSenha {
 }
 
 model Estabelecimento {
-  id                            String   @id @default(uuid())
+  id                            String   @id @default(auto()) @map("_id") @db.ObjectId
   nome                          String
   cnpj                          String   @unique
   cnae                          String
@@ -62,7 +62,7 @@ model Estabelecimento {
   numeroRefeicoes               Int
   possuiAlvaraSanitario         Int
   possuiResponsavelBoasPraticas Int
-  alteradoPor                   String
+  alteradoPor                   String   @db.ObjectId
   ativo                         Boolean  @default(true)
   alteradoEm                    DateTime @updatedAt
 
@@ -72,21 +72,21 @@ model Estabelecimento {
 }
 
 model Gestores {
-  id          String    @id @default(uuid())
-  idAvaliacao String
-  criadoEm    DateTime  @default(now()) @db.Timestamptz(3)
-  alteradoEm  DateTime  @updatedAt @db.Timestamptz(3)
-  informacoes String    @db.Text
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  idAvaliacao String    @db.ObjectId
+  criadoEm    DateTime  @default(now())
+  alteradoEm  DateTime  @updatedAt
+  informacoes String
   ativo       Boolean   @default(true)
   avaliacao   Avaliacao @relation(fields: [idAvaliacao], references: [id])
 }
 
 model ManipuladorAlimento {
-  id          String    @id @default(uuid())
-  idAvaliacao String
-  criadoEm    DateTime  @default(now()) @db.Timestamptz(3)
-  alteradoEm  DateTime  @updatedAt @db.Timestamptz(3)
-  informacoes String    @db.Text
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  idAvaliacao String    @db.ObjectId
+  criadoEm    DateTime  @default(now())
+  alteradoEm  DateTime  @updatedAt
+  informacoes String
   ativo       Boolean   @default(true)
   avaliacao   Avaliacao @relation(fields: [idAvaliacao], references: [id])
 
@@ -94,67 +94,67 @@ model ManipuladorAlimento {
 }
 
 model ListaVerificacao {
-  id          String    @id @default(uuid())
-  informacoes String    @db.Text
-  idAvaliacao String
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  informacoes String
+  idAvaliacao String    @db.ObjectId
   ativo       Boolean   @default(true)
-  criadoEm    DateTime  @default(now()) @db.Timestamptz(3)
-  alteradoEm  DateTime  @updatedAt @db.Timestamptz(3)
+  criadoEm    DateTime  @default(now())
+  alteradoEm  DateTime  @updatedAt
   avaliacao   Avaliacao @relation(fields: [idAvaliacao], references: [id])
 }
 
 model AnaliseQualitativa {
-  id          String    @id @default(uuid())
-  idAvaliacao String
-  informacoes String    @db.Text
-  criadoEm    DateTime  @default(now()) @db.Timestamptz(3)
-  alteradoEm  DateTime  @updatedAt @db.Timestamptz(3)
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  idAvaliacao String    @db.ObjectId
+  informacoes String
+  criadoEm    DateTime  @default(now())
+  alteradoEm  DateTime  @updatedAt
   avaliacao   Avaliacao @relation(fields: [idAvaliacao], references: [id])
   ativo       Boolean   @default(true)
 }
 
 model Triangulacao {
-  id          String   @id @default(uuid())
-  idAvaliacao String
-  informacoes String   @db.Text
-  criadoEm    DateTime @default(now()) @db.Timestamptz(3)
-  alteradoEm  DateTime @updatedAt @db.Timestamptz(3)
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  idAvaliacao String   @db.ObjectId
+  informacoes String
+  criadoEm    DateTime @default(now())
+  alteradoEm  DateTime @updatedAt
 
   resultado Resultado[]
   avaliacao Avaliacao   @relation(fields: [idAvaliacao], references: [id])
 }
 
 model Resultado {
-  id                String          @id @default(uuid())
-  idEstabelecimento String
-  idTriangulacao    String
-  idAvaliacao       String
-  informacoes       String          @db.Text
+  id                String          @id @default(auto()) @map("_id") @db.ObjectId
+  idEstabelecimento String          @db.ObjectId
+  idTriangulacao    String          @db.ObjectId
+  idAvaliacao       String          @db.ObjectId
+  informacoes       String
   triangulacao      Triangulacao    @relation(fields: [idTriangulacao], references: [id])
   estabelecimento   Estabelecimento @relation(fields: [idEstabelecimento], references: [id])
   avaliacao         Avaliacao       @relation(fields: [idAvaliacao], references: [id])
 }
 
 model AnaliseQuantitativa {
-  id                                  String               @id @default(uuid())
-  idAvaliacao                         String
-  caracteristicasSocioDemograficas    String               @db.Text
-  resultadosAvaliacaoQuantitativasCsa String               @db.Text
-  viesOtimista                        String               @db.Text
-  criadoEm                            DateTime             @default(now()) @db.Timestamptz(3)
-  alteradoEm                          DateTime             @updatedAt @db.Timestamptz(3)
+  id                                  String               @id @default(auto()) @map("_id") @db.ObjectId
+  idAvaliacao                         String               @db.ObjectId
+  caracteristicasSocioDemograficas    String
+  resultadosAvaliacaoQuantitativasCsa String
+  viesOtimista                        String
+  criadoEm                            DateTime             @default(now())
+  alteradoEm                          DateTime             @updatedAt
   ativo                               Int                  @default(1)
   avaliacao                           Avaliacao            @relation(fields: [idAvaliacao], references: [id])
   manipuladorAlimento                 ManipuladorAlimento? @relation(fields: [manipuladorAlimentoId], references: [id])
-  manipuladorAlimentoId               String?
+  manipuladorAlimentoId               String?              @db.ObjectId
 }
 
 model Avaliacao {
-  id                String   @id @default(uuid())
-  idEstabelecimento String
-  criadoPor         String
-  criadoEm          DateTime @default(now()) @db.Timestamptz(3)
-  alteradoEm        DateTime @updatedAt @db.Timestamptz(3)
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  idEstabelecimento String   @db.ObjectId
+  idCriador         String   @db.ObjectId
+  criadoEm          DateTime @default(now())
+  alteradoEm        DateTime @updatedAt
   ativo             Boolean  @default(true)
 
   estabelecimento     Estabelecimento       @relation(fields: [idEstabelecimento], references: [id])
@@ -165,5 +165,5 @@ model Avaliacao {
   analiseQualitativa  AnaliseQualitativa[]
   triangulacao        Triangulacao[]
   resultado           Resultado[]
-  usuario             Usuario               @relation(fields: [criadoPor], references: [id])
+  usuario             Usuario               @relation(fields: [idCriador], references: [id])
 }

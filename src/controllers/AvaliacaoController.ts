@@ -7,9 +7,13 @@ const avaliacaoService = new AvaliacaoService();
 export class AvaliacaoController {
   static async criarAvaliacao(req: FastifyRequest, reply: FastifyReply) {
     try {
-      const { idEstabelecimento } = req.body as { idEstabelecimento: string };
+      const idEstabelecimento = req.body as { idEstabelecimento: string };
+      const idCriador = req.usuario.id;
+      if (!idCriador) {
+        return reply.status(401).send({ message: "Usuário não autenticado" });
+      }
 
-      const avaliacaoCriada = await avaliacaoService.criarAvaliacao({ idEstabelecimento });
+      const avaliacaoCriada = await avaliacaoService.criarAvaliacao(idEstabelecimento, idCriador);
 
       reply.send({ avaliacaoCriada });
     } catch (error) {

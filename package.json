@@ -6,10 +6,11 @@
     "dev": "tsx watch src/server.ts",
     "dev:docker": "docker compose -f docker-compose.yml up",
     "dev:migrate": "npx prisma migrate dev --name init",
-    "db:seed": "dotenv -e .env.local -- ts-node prisma/seed.ts"
+    "seed": "node prisma/seed.js",
+    "criar:usuario": "node src/scripts/criarUsuario.js"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "node prisma/seed.ts"
   },
   "keywords": [],
   "author": "Mauricio Pereira Braga",
@@ -28,6 +29,7 @@
     "fastify-type-provider-zod": "^4.0.2",
     "jsonwebtoken": "^9.0.2",
     "prisma": "^6.3.1",
+    "readline-sync": "^1.4.10",
     "swagger-themes": "^1.4.3",
     "zod": "^3.24.1"
   },

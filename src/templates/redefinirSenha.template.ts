@@ -9,7 +9,7 @@ export function generatePasswordResetEmailTemplate(params: {
       <section style="max-width: 32rem; padding: 2rem 1.5rem; margin: 0 auto; background-color: white;">
         <header>
           <a href="${frontendUrl}">
-            <img style="height: 3.8rem;" src="https://i.imgur.com/Gs8N9aB.png" alt="Logo">
+            <img style="height: 3.8rem;" src="https://painel.categorizabrasil.com.br/assets/0ec52c6b-ace1-40ff-b35f-f711687144cd.png" alt="Logo">
           </a>
         </header>
        
