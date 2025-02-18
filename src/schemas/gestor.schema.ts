@@ -82,3 +82,7 @@ export const gestoresPorAvaliacaoSchema = z.object({
   gestores: z.array(gestorBodySchema),
   idAvaliacao: z.string(),
 });
+
+export const deletarGestorSchema = z.object({
+  message: z.string(),
+});

@@ -1,4 +1,9 @@
-import { gestorBodySchema, gestoresPorAvaliacaoSchema, gestorSchema } from "@schemas/gestor.schema";
+import {
+  deletarGestorSchema,
+  gestorBodySchema,
+  gestoresPorAvaliacaoSchema,
+  gestorSchema,
+} from "@schemas/gestor.schema";
 import { listarAvaliacoesResponseSchema } from "@schemas/avaliacao.schema";
 import { GestorController } from "@controllers/GestorController";
 import { authMiddleware } from "@middlewares/auth.middleware";
@@ -89,11 +94,13 @@ export async function gestorRoutes(app: FastifyInstance) {
         security: [{ bearerAuth: [] }],
         headers: authHeadersSchema,
         description: "Deleta um gestor pelo ID. É necessário informar o token Bearer no header 'Authorization'.",
+        response: {
+          200: deletarGestorSchema,
+        },
       },
     },
     async (req, reply) => {
       await GestorController.deletarGestor(req, reply);
-      reply.status(200).send({ message: "Gestor deletado com sucesso." });
     },
   );
 }

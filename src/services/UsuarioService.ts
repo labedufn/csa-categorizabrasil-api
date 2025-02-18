@@ -107,29 +107,6 @@ export class UsuarioService {
   }
 
   /**
-   * Desativa (define `ativo = false`) um usuário.
-   * @param id - Identificador do usuário.
-   * @returns Uma mensagem de sucesso ou lança exceção se não existir.
-   */
-  async desativarUsuario(id: string) {
-    try {
-      const usuario = await prisma.usuario.findUnique({ where: { id } });
-      if (!usuario) {
-        throw new Error("Usuário não encontrado");
-      }
-
-      await prisma.usuario.update({
-        where: { id },
-        data: { ativo: false },
-      });
-
-      return { message: "Usuário desativado com sucesso" };
-    } catch (error) {
-      throwHandledError("Erro ao desativar usuário", error);
-    }
-  }
-
-  /**
    * Altera o tipo de um usuário (ex.: "ADMINISTRADOR", "GESTOR" ou "AVALIADOR").
    * @param idUsuario - Identificador do usuário no banco.
    * @param novoTipo - Novo tipo de usuário.
@@ -143,6 +120,23 @@ export class UsuarioService {
       });
     } catch (error) {
       throwHandledError("Erro ao alterar tipo de usuário", error);
+    }
+  }
+
+  /**
+   * Ativa ou desativa um usuário.
+   * @param idUsuario - Identificador do usuário no banco.
+   * @param ativo - Novo status do usuário.
+   * @returns O usuário atualizado.
+   */
+  async alterarStatusUsuario(idUsuario: string, ativo: boolean) {
+    try {
+      return await prisma.usuario.update({
+        where: { id: idUsuario },
+        data: { ativo },
+      });
+    } catch (error) {
+      throwHandledError("Erro ao alterar status do usuário", error);
     }
   }
 }

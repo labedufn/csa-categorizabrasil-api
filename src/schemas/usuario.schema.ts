@@ -15,6 +15,10 @@ export const atualizarSenhaSchema = z.object({
   novaSenha: z.string().min(6, "Nova senha deve ter no mínimo 6 caracteres"),
 });
 
+export const atualizarSenhaResponseSchema = z.object({
+  message: z.string(),
+});
+
 export const listarUsuariosSchema = z.array(
   z.object({
     id: z.string(),
@@ -28,7 +32,12 @@ export const listarUsuariosSchema = z.array(
   }),
 );
 
-export const desativarUsuarioSchema = z.object({
+export const alterarStatusUsuarioSchema = z.object({
+  ativo: z.boolean(),
+});
+
+export const alterarStatusUsuarioResponseSchema = z.object({
+  message: z.string(),
   ativo: z.boolean(),
 });
 

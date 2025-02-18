@@ -2,9 +2,11 @@ import {
   atualizarUsuarioSchema,
   atualizarSenhaSchema,
   listarUsuariosSchema,
-  desativarUsuarioSchema,
   alterarTipoUsuarioSchema,
   alterarTipoUsuarioResponseSchema,
+  atualizarSenhaResponseSchema,
+  alterarStatusUsuarioSchema,
+  alterarStatusUsuarioResponseSchema,
 } from "@schemas/usuario.schema";
 import { UsuarioController } from "@controllers/UsuarioController";
 import { authMiddleware } from "@middlewares/auth.middleware";
@@ -46,7 +48,7 @@ export async function usuarioRoutes(app: FastifyInstance) {
   );
 
   app.put(
-    "/api/usuarios/desativar/:id",
+    "/api/usuarios/:id/alterar-status",
     {
       preHandler: [authMiddleware, roleMiddleware(["ADMINISTRADOR", "GESTOR"])],
       schema: {
@@ -55,11 +57,11 @@ export async function usuarioRoutes(app: FastifyInstance) {
         headers: authHeadersSchema,
         description:
           "Desativa o usuário. É necessário informar o token Bearer no header 'Authorization' (ADMINISTRADOR pode desativar qualquer usuário, já GESTOR apenas os que pertencem a sua instuição).",
-        body: desativarUsuarioSchema,
-        response: { 200: desativarUsuarioSchema },
+        body: alterarStatusUsuarioSchema,
+        response: { 200: alterarStatusUsuarioResponseSchema },
       },
     },
-    UsuarioController.desativarUsuario,
+    UsuarioController.alterarStatusUsuario,
   );
 
   app.put(
@@ -72,14 +74,14 @@ export async function usuarioRoutes(app: FastifyInstance) {
         headers: authHeadersSchema,
         description: "Atualiza a senha do usuário. É necessário informar o token Bearer no header 'Authorization'.",
         body: atualizarSenhaSchema,
-        response: { 200: atualizarSenhaSchema },
+        response: { 200: atualizarSenhaResponseSchema },
       },
     },
     UsuarioController.atualizarSenha,
   );
 
   app.put(
-    "/api/usuarios/tipo/:id",
+    "/api/usuarios/:id/tipo",
     {
       preHandler: authMiddleware,
       schema: {
