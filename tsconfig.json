@@ -8,6 +8,8 @@
     "module": "node16",
     "target": "es2022",
     "baseUrl": "./",
+    "rootDir": "./src",
+    "outDir": "./dist",
     "paths": {
       "@config/*": ["src/config/*"],
       "@controllers/*": ["src/controllers/*"],
@@ -17,11 +19,13 @@
       "@routes/*": ["src/routes/*"],
       "@services/*": ["src/services/*"],
       "@templates/*": ["src/templates/*"],
-      "@utils/*": ["src/utils/*"],
+      "@utils/*": ["src/utils/*"]
     },
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "moduleResolution": "node16"
-  }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }
