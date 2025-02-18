@@ -58,6 +58,10 @@ export class AuthService {
         throw new Error("Credenciais inválidas");
       }
 
+      if (!usuario.ativo) {
+        throw new Error("Usuário desativado. Entre em contato com um administrador.");
+      }
+
       const senhaValida = await compare(senha, usuario.senha);
 
       if (!senhaValida) {

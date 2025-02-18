@@ -114,3 +114,12 @@ export const manipuladorAlimentosSchema = z.object({
 });
 
 export const manipuladorAlimentosBodySchema = manipuladorAlimentosSchema.omit({ idAvaliacao: true });
+
+export const manipuladoresAlimentosPorAvaliacaoSchema = z.object({
+  manipuladoresAlimentos: z.array(manipuladorAlimentosBodySchema),
+  idAvaliacao: z.string(),
+});
+
+export const deletarManipuladorAlimentosSchema = z.object({
+  message: z.string(),
+});

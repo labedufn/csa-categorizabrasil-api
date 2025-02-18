@@ -59,3 +59,14 @@ export const alterarTipoUsuarioResponseSchema = z.object({
     ativo: z.boolean(),
   }),
 });
+
+export const usuarioSchema = z.object({
+  id: z.string(),
+  nome: z.string(),
+  sobrenome: z.string(),
+  cpf: z.string(),
+  email: z.string(),
+  instituicao: z.string(),
+  tipo: z.enum(["ADMINISTRADOR", "GESTOR", "AVALIADOR"]),
+  ativo: z.boolean(),
+});

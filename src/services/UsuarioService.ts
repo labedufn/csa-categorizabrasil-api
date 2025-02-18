@@ -93,16 +93,16 @@ export class UsuarioService {
   }
 
   /**
-   * Obtém um usuário a partir do ID.
+   * Busca um usuário por ID.
    * @param id - Identificador do usuário.
    * @returns O usuário encontrado ou `null` se não existir.
    */
-  async obterUsuarioPorId(id: string) {
+  async buscarUsuarioPorId(id: string) {
     try {
       const usuario = await prisma.usuario.findUnique({ where: { id } });
       return usuario;
     } catch (error) {
-      throwHandledError("Erro ao obter usuário por ID", error);
+      throwHandledError("Erro ao buscar usuário por ID", error);
     }
   }
 

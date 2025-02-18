@@ -62,6 +62,17 @@ export class UsuarioController {
     }
   }
 
+  static async buscarUsuarioPorId(req: FastifyRequest, reply: FastifyReply) {
+    try {
+      const { idUsuario } = req.params as { idUsuario: string };
+      const usuario = await usuarioService.buscarUsuarioPorId(idUsuario);
+
+      reply.send({ usuario });
+    } catch (error) {
+      reply.status(400).send({ error: (error as Error).message });
+    }
+  }
+
   static async alterarStatusUsuario(req: FastifyRequest, reply: FastifyReply) {
     try {
       const usuarioLogado = req.usuario;
@@ -73,7 +84,7 @@ export class UsuarioController {
       const { ativo } = req.body as { ativo: boolean };
 
       if (usuarioLogado.tipo === "GESTOR") {
-        const usuarioAlvo = await usuarioService.obterUsuarioPorId(idUsuario);
+        const usuarioAlvo = await usuarioService.buscarUsuarioPorId(idUsuario);
         if (!usuarioAlvo) {
           return reply.status(404).send({ message: "Usuário não encontrado" });
         }

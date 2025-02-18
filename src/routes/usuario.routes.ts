@@ -7,6 +7,7 @@ import {
   atualizarSenhaResponseSchema,
   alterarStatusUsuarioSchema,
   alterarStatusUsuarioResponseSchema,
+  usuarioSchema,
 } from "@schemas/usuario.schema";
 import { UsuarioController } from "@controllers/UsuarioController";
 import { authMiddleware } from "@middlewares/auth.middleware";
@@ -29,6 +30,25 @@ export async function usuarioRoutes(app: FastifyInstance) {
       },
     },
     UsuarioController.listarUsuarios,
+  );
+
+  app.get(
+    "/api/usuarios/:id",
+    {
+      preHandler: authMiddleware,
+      schema: {
+        tags: ["Usuários"],
+        security: [{ bearerAuth: [] }],
+        headers: authHeadersSchema,
+        description: "Busca um usuário pelo ID. É necessário informar o token Bearer no header 'Authorization'.",
+        response: {
+          200: usuarioSchema,
+        },
+      },
+    },
+    async (req, reply) => {
+      await UsuarioController.buscarUsuarioPorId(req, reply);
+    },
   );
 
   app.put(

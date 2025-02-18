@@ -4,7 +4,7 @@ import { prisma } from "@config/prisma";
 
 export class GestorService {
   /**
-   * Cria um novo Gestor.
+   * Cria um novo gestor.
    * @param idAvaliacao - O identificador da avaliação relacionado.
    * @param gestor - Os dados do gestor, conforme a interface IGestor.
    * @returns O gestor criado no banco de dados.
@@ -23,7 +23,37 @@ export class GestorService {
   }
 
   /**
-   * Editar um Gestor.
+   * Busca todos os gestores de uma Avaliação.
+   * @param idAvaliacao - O identificador da avaliação.
+   * @returns Todos os gestores encontrados.
+   */
+  async buscarGestoresPorAvaliacao(idAvaliacao: string) {
+    try {
+      return await prisma.gestores.findMany({
+        where: { idAvaliacao },
+      });
+    } catch (error) {
+      throwHandledError("Erro ao buscar gestores por avaliação", error);
+    }
+  }
+
+  /**
+   * Busca um gestor pelo ID.
+   * @param idGestor - O identificador do gestor.
+   * @returns O gestor encontrado.
+   */
+  async buscarGestorPorId(idGestor: string) {
+    try {
+      return await prisma.gestores.findUnique({
+        where: { id: idGestor },
+      });
+    } catch (error) {
+      throwHandledError("Erro ao buscar gestor por ID", error);
+    }
+  }
+
+  /**
+   * Editar um gestor.
    * @param idGestor - O identificador do gestor.
    * @param gestor - Os dados do gestor, conforme a interface IGestor.
    * @returns O gestor atualizado no banco de dados.
@@ -40,22 +70,7 @@ export class GestorService {
   }
 
   /**
-   * Busca um Gestor pelo ID.
-   * @param idGestor - O identificador do gestor.
-   * @returns O gestor encontrado.
-   */
-  async buscarGestorPorId(idGestor: string) {
-    try {
-      return await prisma.gestores.findUnique({
-        where: { id: idGestor },
-      });
-    } catch (error) {
-      throwHandledError("Erro ao buscar gestor por ID", error);
-    }
-  }
-
-  /**
-   * Deleta um Gestor pelo ID.
+   * Deleta um gestor pelo ID.
    * @param idGestor - O identificador do gestor.
    */
   async deletarGestor(idGestor: string) {
@@ -63,24 +78,9 @@ export class GestorService {
       await prisma.gestores.delete({
         where: { id: idGestor },
       });
-      return; // ou apenas 'return' sem valor
+      return;
     } catch (error) {
       throwHandledError("Erro ao deletar gestor", error);
-    }
-  }
-
-  /**
-   * Busca todos os Gestores de uma Avaliação.
-   * @param idAvaliacao - O identificador da avaliação.
-   * @returns Todos os gestores encontrados.
-   */
-  async buscarGestoresPorAvaliacao(idAvaliacao: string) {
-    try {
-      return await prisma.gestores.findMany({
-        where: { idAvaliacao },
-      });
-    } catch (error) {
-      throwHandledError("Erro ao buscar gestores por avaliação", error);
     }
   }
 }
