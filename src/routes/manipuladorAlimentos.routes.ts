@@ -11,11 +11,11 @@ import { FastifyInstance } from "fastify";
 
 export async function manipuladorAlimentosRoutes(app: FastifyInstance) {
   app.post(
-    "/api/avaliacoes/:id/manipuladores-alimentos",
+    "/api/avaliacoes/:id/manipulador-alimentos",
     {
       preHandler: authMiddleware,
       schema: {
-        tags: ["Manipuladores de Alimentos"],
+        tags: ["Manipulador de Alimentos"],
         security: [{ bearerAuth: [] }],
         body: manipuladorAlimentosBodySchema,
         headers: authHeadersSchema,
@@ -28,11 +28,11 @@ export async function manipuladorAlimentosRoutes(app: FastifyInstance) {
   );
 
   app.get(
-    "/api/avaliacoes/:id/manipuladores-alimentos",
+    "/api/avaliacoes/:id/manipulador-alimentos",
     {
       preHandler: authMiddleware,
       schema: {
-        tags: ["Manipuladores de Alimentos"],
+        tags: ["Manipulador de Alimentos"],
         security: [{ bearerAuth: [] }],
         headers: authHeadersSchema,
         description:
@@ -46,11 +46,11 @@ export async function manipuladorAlimentosRoutes(app: FastifyInstance) {
   );
 
   app.get(
-    "/api/avaliacoes/manipuladores-alimentos/:id",
+    "/api/avaliacoes/manipulador-alimentos/:id",
     {
       preHandler: authMiddleware,
       schema: {
-        tags: ["Manipuladores de Alimentos"],
+        tags: ["Manipulador de Alimentos"],
         security: [{ bearerAuth: [] }],
         headers: authHeadersSchema,
         description: "Busca um gestor pelo ID. É necessário informar o token Bearer no header 'Authorization'.",
@@ -65,11 +65,11 @@ export async function manipuladorAlimentosRoutes(app: FastifyInstance) {
   );
 
   app.put(
-    "/api/avaliacoes/manipuladores-alimentos/:id/editar",
+    "/api/avaliacoes/manipulador-alimentos/:id/editar",
     {
       preHandler: authMiddleware,
       schema: {
-        tags: ["Manipuladores de Alimentos"],
+        tags: ["Manipulador de Alimentos"],
         security: [{ bearerAuth: [] }],
         headers: authHeadersSchema,
         description:
@@ -86,11 +86,11 @@ export async function manipuladorAlimentosRoutes(app: FastifyInstance) {
   );
 
   app.delete(
-    "/api/avaliacoes/manipuladores-alimentos/:id/deletar",
+    "/api/avaliacoes/manipulador-alimentos/:id/deletar",
     {
       preHandler: authMiddleware,
       schema: {
-        tags: ["Manipuladores de Alimentos"],
+        tags: ["Manipulador de Alimentos"],
         security: [{ bearerAuth: [] }],
         headers: authHeadersSchema,
         description:

@@ -49,12 +49,12 @@ export class ManipuladorAlimentosController {
       const { idManipuladorAlimentos } = req.params as { idManipuladorAlimentos: string };
       const manipuladorAlimentosData = req.body as IManipuladorAlimentos;
 
-      const gestorAtualizado = await manipuladorAlimentosService.editarManipuladorAlimentos(
+      const manipuladorAlimentosAtualizado = await manipuladorAlimentosService.editarManipuladorAlimentos(
         idManipuladorAlimentos,
         manipuladorAlimentosData,
       );
 
-      reply.send({ gestorAtualizado });
+      reply.send({ manipuladorAlimentosAtualizado });
     } catch (error) {
       reply.status(400).send({ error: (error as Error).message });
     }

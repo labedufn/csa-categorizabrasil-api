@@ -12,11 +12,11 @@ import { FastifyInstance } from "fastify";
 
 export async function gestorRoutes(app: FastifyInstance) {
   app.post(
-    "/api/avaliacoes/:id/gestores",
+    "/api/avaliacoes/:id/gestor",
     {
       preHandler: authMiddleware,
       schema: {
-        tags: ["Gestores"],
+        tags: ["Gestor"],
         security: [{ bearerAuth: [] }],
         body: gestorBodySchema,
         headers: authHeadersSchema,
@@ -29,11 +29,11 @@ export async function gestorRoutes(app: FastifyInstance) {
   );
 
   app.get(
-    "/api/avaliacoes/:id/gestores",
+    "/api/avaliacoes/:id/gestor",
     {
       preHandler: authMiddleware,
       schema: {
-        tags: ["Gestores"],
+        tags: ["Gestor"],
         security: [{ bearerAuth: [] }],
         headers: authHeadersSchema,
         description:
@@ -47,11 +47,11 @@ export async function gestorRoutes(app: FastifyInstance) {
   );
 
   app.get(
-    "/api/avaliacoes/gestores/:id",
+    "/api/avaliacoes/gestor/:id",
     {
       preHandler: authMiddleware,
       schema: {
-        tags: ["Gestores"],
+        tags: ["Gestor"],
         security: [{ bearerAuth: [] }],
         headers: authHeadersSchema,
         description: "Busca um gestor pelo ID. É necessário informar o token Bearer no header 'Authorization'.",
@@ -66,11 +66,11 @@ export async function gestorRoutes(app: FastifyInstance) {
   );
 
   app.put(
-    "/api/avaliacoes/gestores/:id/editar",
+    "/api/avaliacoes/gestor/:id/editar",
     {
       preHandler: authMiddleware,
       schema: {
-        tags: ["Gestores"],
+        tags: ["Gestor"],
         security: [{ bearerAuth: [] }],
         headers: authHeadersSchema,
         description: "Edita um gestor. É necessário informar o token Bearer no header 'Authorization'.",
