@@ -4,10 +4,10 @@ import { prisma } from "@config/prisma";
 
 export class ManipuladorAlimentosService {
   /**
-   * Cria um novo Gestor.
+   * Cria um manipulador de alimentos.
    * @param idAvaliacao - O identificador da avaliação relacionado.
-   * @param gestor - Os dados do gestor, conforme a interface IGestor.
-   * @returns O gestor criado no banco de dados.
+   * @param manipuladorAlimentos - O manipulador de alimentos a ser criado.
+   * @returns O manipulador de alimentos criado.
    */
   async criarManipuladorAlimentos(idAvaliacao: string, manipuladorAlimentos: IManipuladorAlimentos) {
     try {
