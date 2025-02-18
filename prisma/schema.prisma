@@ -81,7 +81,7 @@ model Gestores {
   avaliacao   Avaliacao @relation(fields: [idAvaliacao], references: [id])
 }
 
-model ManipuladorAlimento {
+model ManipuladorAlimentos {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   idAvaliacao String    @db.ObjectId
   criadoEm    DateTime  @default(now())
@@ -136,17 +136,17 @@ model Resultado {
 }
 
 model AnaliseQuantitativa {
-  id                                  String               @id @default(auto()) @map("_id") @db.ObjectId
-  idAvaliacao                         String               @db.ObjectId
+  id                                  String                @id @default(auto()) @map("_id") @db.ObjectId
+  idAvaliacao                         String                @db.ObjectId
   caracteristicasSocioDemograficas    String
   resultadosAvaliacaoQuantitativasCsa String
   viesOtimista                        String
-  criadoEm                            DateTime             @default(now())
-  alteradoEm                          DateTime             @updatedAt
-  ativo                               Int                  @default(1)
-  avaliacao                           Avaliacao            @relation(fields: [idAvaliacao], references: [id])
-  manipuladorAlimento                 ManipuladorAlimento? @relation(fields: [manipuladorAlimentoId], references: [id])
-  manipuladorAlimentoId               String?              @db.ObjectId
+  criadoEm                            DateTime              @default(now())
+  alteradoEm                          DateTime              @updatedAt
+  ativo                               Int                   @default(1)
+  avaliacao                           Avaliacao             @relation(fields: [idAvaliacao], references: [id])
+  manipuladorAlimentos                ManipuladorAlimentos? @relation(fields: [manipuladorAlimentosId], references: [id])
+  manipuladorAlimentosId              String?               @db.ObjectId
 }
 
 model Avaliacao {
@@ -157,13 +157,13 @@ model Avaliacao {
   alteradoEm        DateTime @updatedAt
   ativo             Boolean  @default(true)
 
-  estabelecimento     Estabelecimento       @relation(fields: [idEstabelecimento], references: [id])
-  gestores            Gestores[]
-  analiseQuantitativa AnaliseQuantitativa[]
-  manipuladorAlimento ManipuladorAlimento[]
-  listaVerificacao    ListaVerificacao[]
-  analiseQualitativa  AnaliseQualitativa[]
-  triangulacao        Triangulacao[]
-  resultado           Resultado[]
-  usuario             Usuario               @relation(fields: [idCriador], references: [id])
+  estabelecimento      Estabelecimento        @relation(fields: [idEstabelecimento], references: [id])
+  gestores             Gestores[]
+  analiseQuantitativa  AnaliseQuantitativa[]
+  manipuladorAlimentos ManipuladorAlimentos[]
+  listaVerificacao     ListaVerificacao[]
+  analiseQualitativa   AnaliseQualitativa[]
+  triangulacao         Triangulacao[]
+  resultado            Resultado[]
+  usuario              Usuario                @relation(fields: [idCriador], references: [id])
 }

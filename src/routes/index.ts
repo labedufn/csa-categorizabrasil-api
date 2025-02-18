@@ -1,3 +1,4 @@
+import { manipuladorAlimentosRoutes } from "./manipuladorAlimentos.routes";
 import { estabelecimentoRoutes } from "./estabelecimento.routes";
 import { redefinirSenhaRoutes } from "./redefinirSenha.routes";
 import { avaliacaoRoutes } from "./avaliacao.route";
@@ -15,4 +16,5 @@ export async function routes(app: FastifyInstance) {
   await app.register(estabelecimentoRoutes);
   await app.register(avaliacaoRoutes);
   await app.register(gestorRoutes);
+  await app.register(manipuladorAlimentosRoutes);
 }
