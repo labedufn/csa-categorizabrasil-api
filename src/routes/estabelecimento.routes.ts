@@ -5,7 +5,7 @@ import {
   editarEstabelecimentoResponseSchema,
   listarEstabelecimentosResponseSchema,
 } from "@schemas/estabelecimento.schema";
-import { EstabelecimentoController } from "@controllers/EstabelecimentoController";
+import { EstabelecimentoController } from "@controllers/estabelecimento.controller";
 import { authMiddleware } from "@middlewares/auth.middleware";
 import { roleMiddleware } from "@middlewares/role.middleware";
 import { authHeadersSchema } from "@schemas/headers.schema";

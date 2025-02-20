@@ -1,4 +1,4 @@
-import { ManipuladorAlimentosService } from "@services/ManipuladorAlimentosService";
+import { ManipuladorAlimentosService } from "@services/manipuladorAlimentos.service";
 import { IManipuladorAlimentos } from "@interfaces/IManipuladorAlimento";
 import { FastifyRequest, FastifyReply } from "fastify";
 

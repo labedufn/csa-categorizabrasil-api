@@ -1,5 +1,5 @@
 import { conviteCreateSchema, conviteResponseSchema } from "@schemas/convite.schema";
-import { ConviteController } from "@controllers/ConviteController";
+import { ConviteController } from "@controllers/convite.controller";
 import { authMiddleware } from "@middlewares/auth.middleware";
 import { roleMiddleware } from "@middlewares/role.middleware";
 import { FastifyInstance } from "fastify";

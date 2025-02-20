@@ -4,7 +4,7 @@ import {
   desativarAvaliacaoResponseSchema,
   listarAvaliacoesResponseSchema,
 } from "@schemas/avaliacao.schema";
-import { AvaliacaoController } from "@controllers/AvaliacaoController";
+import { AvaliacaoController } from "@controllers/avaliacao.controller";
 import { authMiddleware } from "@middlewares/auth.middleware";
 import { roleMiddleware } from "@middlewares/role.middleware";
 import { authHeadersSchema } from "@schemas/headers.schema";

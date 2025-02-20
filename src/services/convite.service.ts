@@ -1,6 +1,6 @@
 import { generateInvitationEmailTemplate } from "@templates/convite.template";
 import { throwHandledError } from "@utils/throwHandledError";
-import { EmailService } from "./EmailService";
+import { EmailService } from "./email.service";
 import { prisma } from "@config/prisma";
 import { sign } from "jsonwebtoken";
 

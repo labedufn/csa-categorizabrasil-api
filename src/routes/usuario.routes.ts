@@ -9,7 +9,7 @@ import {
   alterarStatusUsuarioResponseSchema,
   usuarioSchema,
 } from "@schemas/usuario.schema";
-import { UsuarioController } from "@controllers/UsuarioController";
+import { UsuarioController } from "@controllers/usuario.controller";
 import { authMiddleware } from "@middlewares/auth.middleware";
 import { roleMiddleware } from "@middlewares/role.middleware";
 import { authHeadersSchema } from "@schemas/headers.schema";

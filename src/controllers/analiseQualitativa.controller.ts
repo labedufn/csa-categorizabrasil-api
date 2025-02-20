@@ -1,4 +1,4 @@
-import { AnaliseQualitativaService } from "@services/AnaliseQualitativaService";
+import { AnaliseQualitativaService } from "@services/analiseQualitativa.service";
 import { IAnaliseQualitativa } from "@interfaces/IAnaliseQualitativa";
 import { FastifyRequest, FastifyReply } from "fastify";
 

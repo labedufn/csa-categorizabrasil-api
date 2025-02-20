@@ -1,5 +1,5 @@
 import { loginSchema, registrarSchema, loginResponseSchema, registrarComConviteSchema } from "@schemas/auth.schema";
-import { AuthController } from "@controllers/AuthController";
+import { AuthController } from "@controllers/auth.controller";
 import { FastifyInstance } from "fastify";
 
 export async function authRoutes(app: FastifyInstance) {

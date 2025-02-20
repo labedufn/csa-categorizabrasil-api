@@ -1,5 +1,5 @@
 import { atualizarUsuarioSchema, atualizarSenhaSchema } from "@schemas/usuario.schema";
-import { UsuarioService } from "@services/UsuarioService";
+import { UsuarioService } from "@services/usuario.service";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { prisma } from "@config/prisma";
 import { z } from "zod";

@@ -4,7 +4,7 @@ import {
   analiseQualitativaSchema,
   deletarAnaliseQualitativaSchema,
 } from "@schemas/analiseQualitativa.schema";
-import { AnaliseQualitativaController } from "@controllers/AnaliseQualitativaController";
+import { AnaliseQualitativaController } from "@controllers/analiseQualitativa.controller";
 import { authMiddleware } from "@middlewares/auth.middleware";
 import { authHeadersSchema } from "@schemas/headers.schema";
 import { FastifyInstance } from "fastify";

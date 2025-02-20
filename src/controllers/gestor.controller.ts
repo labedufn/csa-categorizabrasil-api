@@ -1,4 +1,4 @@
-import { GestorService } from "@services/GestorService";
+import { GestorService } from "@services/gestor.service";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { IGestor } from "@interfaces/IGestor";
 

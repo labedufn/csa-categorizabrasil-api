@@ -1,6 +1,6 @@
 import { generatePasswordResetEmailTemplate } from "@templates/redefinirSenha.template";
 import { throwHandledError } from "@utils/throwHandledError";
-import { EmailService } from "./EmailService";
+import { EmailService } from "./email.service";
 import { sign, verify } from "jsonwebtoken";
 import { prisma } from "@config/prisma";
 import { hash } from "bcryptjs";

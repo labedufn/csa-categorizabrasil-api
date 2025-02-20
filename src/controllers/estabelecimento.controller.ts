@@ -1,4 +1,4 @@
-import { EstabelecimentoService } from "@services/EstabelecimentoService";
+import { EstabelecimentoService } from "@services/estabelecimento.service";
 import { IEstabelecimento } from "@interfaces/IEstabelecimento";
 import { FastifyRequest, FastifyReply } from "fastify";
 

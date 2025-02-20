@@ -1,7 +1,6 @@
 services:
   mongo:
-    build:
-      context: ./mongodb_rs
+    image: mongo:latest
     container_name: db-csa
     restart: always
     ports:

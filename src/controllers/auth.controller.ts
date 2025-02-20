@@ -1,8 +1,8 @@
 import { loginSchema, registrarSchema, loginResponseSchema, registrarComConviteSchema } from "@schemas/auth.schema";
-import { RedefinirSenhaService } from "@services/RedefinirSenhaService";
-import { ConviteService } from "@services/ConviteService";
+import { RedefinirSenhaService } from "@services/redefinirSenha.service";
+import { ConviteService } from "@services/convite.service";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { AuthService } from "@services/AuthService";
+import { AuthService } from "@services/auth.service";
 import { IUsuario } from "@interfaces/IUsuario";
 import { z } from "zod";
 

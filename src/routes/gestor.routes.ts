@@ -5,7 +5,7 @@ import {
   gestorSchema,
 } from "@schemas/gestor.schema";
 import { listarAvaliacoesResponseSchema } from "@schemas/avaliacao.schema";
-import { GestorController } from "@controllers/GestorController";
+import { GestorController } from "@controllers/gestor.controller";
 import { authMiddleware } from "@middlewares/auth.middleware";
 import { authHeadersSchema } from "@schemas/headers.schema";
 import { FastifyInstance } from "fastify";

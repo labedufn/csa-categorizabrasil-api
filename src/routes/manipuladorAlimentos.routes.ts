@@ -4,7 +4,7 @@ import {
   manipuladorAlimentosSchema,
   manipuladoresAlimentosPorAvaliacaoSchema,
 } from "@schemas/manipuladorAlimentos.schema";
-import { ManipuladorAlimentosController } from "@controllers/ManipuladorAlimentosController";
+import { ManipuladorAlimentosController } from "@controllers/manipuladorAlimentos.controller";
 import { authMiddleware } from "@middlewares/auth.middleware";
 import { authHeadersSchema } from "@schemas/headers.schema";
 import { FastifyInstance } from "fastify";

@@ -1,4 +1,4 @@
-import { AvaliacaoService } from "@services/AvaliacaoService";
+import { AvaliacaoService } from "@services/avaliacao.service";
 import { FastifyRequest, FastifyReply } from "fastify";
 
 const avaliacaoService = new AvaliacaoService();
