@@ -66,6 +66,7 @@ export class UsuarioController {
     try {
       const { id: idUsuario } = req.params as { id: string };
       const usuario = await usuarioService.buscarUsuarioPorId(idUsuario);
+      console.log(usuario);
       reply.send(usuario);
     } catch (error) {
       reply.status(400).send({ error: (error as Error).message });

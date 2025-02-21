@@ -13,7 +13,7 @@ export class EstabelecimentoController {
       };
 
       const estabelecimentoCriado = await estabelecimentoService.criarEstabelecimento(novoEstabelecimento);
-      reply.send({ estabelecimentoCriado });
+      reply.send(estabelecimentoCriado);
     } catch (error) {
       reply.status(400).send({ error: (error as Error).message });
     }
@@ -42,7 +42,8 @@ export class EstabelecimentoController {
   static async listarEstabelecimentos(_req: FastifyRequest, reply: FastifyReply) {
     try {
       const estabelecimentos = await estabelecimentoService.listarEstabelecimentos();
-      reply.send({ estabelecimentos });
+      console.log(estabelecimentos);
+      reply.send(estabelecimentos);
     } catch (error) {
       reply.status(400).send({ error: (error as Error).message });
     }

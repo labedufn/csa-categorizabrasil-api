@@ -50,8 +50,8 @@ export class EstabelecimentoService {
    */
   async listarEstabelecimentos() {
     try {
-      const estabelecimentosAtivos = await Estabelecimento.find({ ativo: true });
-      return estabelecimentosAtivos;
+      const estabelecimentos = await Estabelecimento.find({ ativo: true });
+      return estabelecimentos;
     } catch (error) {
       throwHandledError("Erro ao listar estabelecimentos", error);
     }
