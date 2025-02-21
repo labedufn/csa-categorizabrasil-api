@@ -42,7 +42,6 @@ export class EstabelecimentoController {
   static async listarEstabelecimentos(_req: FastifyRequest, reply: FastifyReply) {
     try {
       const estabelecimentos = await estabelecimentoService.listarEstabelecimentos();
-      console.log(estabelecimentos);
       reply.send(estabelecimentos);
     } catch (error) {
       reply.status(400).send({ error: (error as Error).message });
