@@ -86,24 +86,7 @@ export class UsuarioService {
   async buscarUsuarioPorId(id: string) {
     try {
       const usuario = await Usuario.findById(id);
-      if (!usuario) {
-        throw new Error("Usuário não encontrado");
-      }
-
-      // Mapeia para o schema definido
-      const usuarioFormatado = {
-        id: usuario._id.toString(), // converte ObjectId para string
-        nome: usuario.nome,
-        sobrenome: usuario.sobrenome,
-        cpf: usuario.cpf,
-        email: usuario.email,
-        instituicao: usuario.instituicao,
-        tipo: usuario.tipo,
-        ativo: usuario.ativo,
-      };
-
-      console.log("USUARIO FORMATADO", usuarioFormatado);
-      return usuarioFormatado;
+      return usuario;
     } catch (error) {
       throwHandledError("Erro ao buscar usuário por ID", error);
     }

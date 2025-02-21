@@ -90,7 +90,7 @@ export async function gestorRoutes(app: FastifyInstance) {
     {
       preHandler: authMiddleware,
       schema: {
-        tags: ["Gestores"],
+        tags: ["Gestor"],
         security: [{ bearerAuth: [] }],
         headers: authHeadersSchema,
         description: "Deleta um gestor pelo ID. É necessário informar o token Bearer no header 'Authorization'.",

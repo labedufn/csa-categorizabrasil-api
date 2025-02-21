@@ -11,11 +11,9 @@ export const criarEstabelecimentoBodySchema = z.object({
   numeroRefeicoes: z.number(),
   possuiAlvaraSanitario: z.number(),
   possuiResponsavelBoasPraticas: z.number(),
-  ativo: z.boolean().optional(),
 });
 
 export const criarEstabelecimentoResponseSchema = z.object({
-  message: z.string(),
   estabelecimentoCriado: z.object({
     id: z.string(),
     nome: z.string(),

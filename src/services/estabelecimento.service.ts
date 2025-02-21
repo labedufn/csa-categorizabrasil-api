@@ -10,10 +10,20 @@ export class EstabelecimentoService {
    */
   async criarEstabelecimento(estabelecimentoData: IEstabelecimento) {
     try {
+      const estabelecimentoExistente = await Estabelecimento.findOne({ cnpj: estabelecimentoData.cnpj });
+      if (estabelecimentoExistente) {
+        throw new Error("Estabelecimento já cadastrado");
+      }
+
       const novoEstabelecimento = await Estabelecimento.create({
         ...estabelecimentoData,
       });
-      return novoEstabelecimento;
+      const estabelecimentoCriado = {
+        id: novoEstabelecimento._id.toString(),
+        ...novoEstabelecimento.toJSON(),
+      };
+
+      return estabelecimentoCriado;
     } catch (error) {
       throwHandledError("Erro ao criar estabelecimento", error);
     }

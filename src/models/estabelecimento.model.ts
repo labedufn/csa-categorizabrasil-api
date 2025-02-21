@@ -4,7 +4,7 @@ import { Schema, model } from "mongoose";
 const EstabelecimentoSchema = new Schema<IEstabelecimento>(
   {
     nome: { type: String, required: true },
-    cnpj: { type: String, required: true },
+    cnpj: { type: String, required: true, unique: true },
     cnae: { type: String, required: true },
     endereco: { type: String, required: true },
     cidade: { type: String, required: true },
