@@ -1,6 +1,7 @@
 import { throwHandledError } from "@utils/throwHandledError";
+import { Gestor } from "@models/gestor.model";
 import { IGestor } from "@interfaces/IGestor";
-import { prisma } from "@config/prisma";
+import { Types } from "mongoose";
 
 export class GestorService {
   /**
@@ -9,29 +10,27 @@ export class GestorService {
    * @param gestor - Os dados do gestor, conforme a interface IGestor.
    * @returns O gestor criado no banco de dados.
    */
-  async criarGestor(idAvaliacao: string, gestor: IGestor) {
+  async criarGestor(idAvaliacao: Types.ObjectId, gestor: IGestor) {
     try {
-      return await prisma.gestores.create({
-        data: {
-          idAvaliacao,
-          informacoes: JSON.stringify(gestor),
-        },
+      const novoGestor = await Gestor.create({
+        idAvaliacao,
+        informacoes: JSON.stringify(gestor),
       });
+      return novoGestor;
     } catch (error) {
       throwHandledError("Erro ao criar gestor", error);
     }
   }
 
   /**
-   * Busca todos os gestores de uma Avaliação.
+   * Busca todos os gestores de uma avaliação.
    * @param idAvaliacao - O identificador da avaliação.
    * @returns Todos os gestores encontrados.
    */
   async buscarGestoresPorAvaliacao(idAvaliacao: string) {
     try {
-      return await prisma.gestores.findMany({
-        where: { idAvaliacao },
-      });
+      const gestoresEncontrados = await Gestor.find({ idAvaliacao });
+      return gestoresEncontrados;
     } catch (error) {
       throwHandledError("Erro ao buscar gestores por avaliação", error);
     }
@@ -44,26 +43,27 @@ export class GestorService {
    */
   async buscarGestorPorId(idGestor: string) {
     try {
-      return await prisma.gestores.findUnique({
-        where: { id: idGestor },
-      });
+      const gestorEncontrado = await Gestor.findById(idGestor);
+      return gestorEncontrado;
     } catch (error) {
       throwHandledError("Erro ao buscar gestor por ID", error);
     }
   }
 
   /**
-   * Editar um gestor.
+   * Edita um gestor.
    * @param idGestor - O identificador do gestor.
    * @param gestor - Os dados do gestor, conforme a interface IGestor.
    * @returns O gestor atualizado no banco de dados.
    */
   async editarGestor(idGestor: string, gestor: IGestor) {
     try {
-      return await prisma.gestores.update({
-        where: { id: idGestor },
-        data: { informacoes: JSON.stringify(gestor) },
-      });
+      const gestorAtualizado = await Gestor.findByIdAndUpdate(
+        idGestor,
+        { informacoes: JSON.stringify(gestor) },
+        { new: true },
+      );
+      return gestorAtualizado;
     } catch (error) {
       throwHandledError("Erro ao editar gestor", error);
     }
@@ -75,9 +75,7 @@ export class GestorService {
    */
   async deletarGestor(idGestor: string) {
     try {
-      await prisma.gestores.delete({
-        where: { id: idGestor },
-      });
+      await Gestor.findByIdAndDelete(idGestor);
       return;
     } catch (error) {
       throwHandledError("Erro ao deletar gestor", error);

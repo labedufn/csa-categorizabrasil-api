@@ -1,7 +1,7 @@
 import { generateInvitationEmailTemplate } from "@templates/convite.template";
 import { throwHandledError } from "@utils/throwHandledError";
+import { Convite } from "@models/convite.model";
 import { EmailService } from "./email.service";
-import { prisma } from "@config/prisma";
 import { sign } from "jsonwebtoken";
 
 export class ConviteService {
@@ -22,15 +22,14 @@ export class ConviteService {
 
       const expiraEm = new Date(Date.now() + 15 * 60 * 1000);
 
-      await prisma.convite.create({
-        data: {
-          token,
-          idCriador,
-          email,
-          instituicao,
-          tipo,
-          expiraEm,
-        },
+      await Convite.create({
+        token,
+        idCriador,
+        email,
+        instituicao,
+        tipo,
+        expiraEm,
+        usado: false,
       });
 
       const baseUrl = process.env.BASE_URL || "http://localhost:3000";
@@ -63,9 +62,9 @@ export class ConviteService {
    */
   async validarConvite(token: string): Promise<boolean> {
     try {
-      const convite = await prisma.convite.findUnique({ where: { token } });
-      if (!convite) return false;
-      if (convite.expiraEm < new Date() || convite.usado) return false;
+      const conviteDoc = await Convite.findOne({ token });
+      if (!conviteDoc) return false;
+      if (conviteDoc.expiraEm < new Date() || conviteDoc.usado) return false;
       return true;
     } catch (error) {
       throwHandledError("Erro ao validar convite", error);
@@ -75,11 +74,11 @@ export class ConviteService {
   /**
    * Obtém um convite pelo token.
    * @param token - O token do convite.
-   * @returns O objeto convite encontrado ou null se não existir.
+   * @returns O documento convite encontrado ou null se não existir.
    */
   async getConvite(token: string) {
     try {
-      return await prisma.convite.findUnique({ where: { token } });
+      return await Convite.findOne({ token });
     } catch (error) {
       throwHandledError("Erro ao buscar convite", error);
     }
@@ -91,10 +90,7 @@ export class ConviteService {
    */
   async marcarConviteComoUsado(token: string): Promise<void> {
     try {
-      await prisma.convite.update({
-        where: { token },
-        data: { usado: true },
-      });
+      await Convite.findOneAndUpdate({ token }, { usado: true });
     } catch (error) {
       throwHandledError("Erro ao marcar convite como usado", error);
     }

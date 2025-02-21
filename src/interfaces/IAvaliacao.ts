@@ -1,4 +1,4 @@
-export interface IAvaliacao {
+export interface IAvaliacao extends Document {
   idEstabelecimento: string;
-  ativo?: boolean;
+  idCriador: string;
 }

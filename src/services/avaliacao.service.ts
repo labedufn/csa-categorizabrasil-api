@@ -1,6 +1,7 @@
 import { throwHandledError } from "@utils/throwHandledError";
+import { Avaliacao } from "@models/avaliacao.model";
 import { IAvaliacao } from "@interfaces/IAvaliacao";
-import { prisma } from "@config/prisma";
+import { Types } from "mongoose";
 
 export class AvaliacaoService {
   /**
@@ -9,14 +10,13 @@ export class AvaliacaoService {
    * @param idUsuario - O identificador do usuário que criou a avaliação.
    * @returns A avaliação criada.
    */
-  async criarAvaliacao(avaliacao: IAvaliacao, idUsuario: string) {
+  async criarAvaliacao(avaliacao: Types.ObjectId, idUsuario: string) {
     try {
-      return await prisma.avaliacao.create({
-        data: {
-          ...avaliacao,
-          idCriador: idUsuario,
-        },
+      const novaAvaliacao = await Avaliacao.create({
+        ...avaliacao,
+        idCriador: idUsuario,
       });
+      return novaAvaliacao;
     } catch (error) {
       throwHandledError("Erro ao criar avaliação", error);
     }
@@ -28,9 +28,8 @@ export class AvaliacaoService {
    */
   async listarAvaliacoes() {
     try {
-      return await prisma.avaliacao.findMany({
-        where: { ativo: true },
-      });
+      const avaliacoesAtivas = await Avaliacao.find({ ativo: true });
+      return avaliacoesAtivas;
     } catch (error) {
       throwHandledError("Erro ao listar avaliações", error);
     }
@@ -43,10 +42,8 @@ export class AvaliacaoService {
    */
   async desativarAvaliacao(idAvaliacao: string) {
     try {
-      return await prisma.avaliacao.update({
-        where: { id: idAvaliacao },
-        data: { ativo: false },
-      });
+      const avaliacaoDesativada = await Avaliacao.findByIdAndUpdate(idAvaliacao, { ativo: false }, { new: true });
+      return avaliacaoDesativada;
     } catch (error) {
       throwHandledError("Erro ao desativar avaliação", error);
     }

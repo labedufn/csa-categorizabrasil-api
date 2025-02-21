@@ -1,7 +1,8 @@
 import { throwHandledError } from "@utils/throwHandledError";
+import { normalizeDocument } from "@utils/normalizeDocument";
+import { Usuario } from "@models/usuario.model";
 import { IUsuario } from "@interfaces/IUsuario";
 import { compare, hash } from "bcryptjs";
-import { prisma } from "@config/prisma";
 import { Auth } from "@config/auth";
 
 export class AuthService {
@@ -12,10 +13,8 @@ export class AuthService {
    */
   async registrarUsuario(dadosUsuario: IUsuario) {
     try {
-      const usuarioExistente = await prisma.usuario.findFirst({
-        where: {
-          OR: [{ email: dadosUsuario.email }, { cpf: dadosUsuario.cpf }],
-        },
+      const usuarioExistente = await Usuario.findOne({
+        $or: [{ email: dadosUsuario.email }, { cpf: dadosUsuario.cpf }],
       });
 
       if (usuarioExistente) {
@@ -24,15 +23,13 @@ export class AuthService {
 
       const hashedPassword = await hash(dadosUsuario.senha, 10);
 
-      const usuario = await prisma.usuario.create({
-        data: {
-          ...dadosUsuario,
-          senha: hashedPassword,
-        },
+      const novoUsuario = await Usuario.create({
+        ...dadosUsuario,
+        senha: hashedPassword,
       });
 
-      const { senha, ...usuarioSemSenha } = usuario;
-      const token = Auth.gerarToken(usuario.id, usuario.email);
+      const usuarioSemSenha = normalizeDocument(novoUsuario);
+      const token = Auth.gerarToken(novoUsuario._id.toString(), novoUsuario.email);
 
       return { usuario: usuarioSemSenha, token };
     } catch (error) {
@@ -48,28 +45,26 @@ export class AuthService {
    */
   async loginUsuario(emailOuCpf: string, senha: string) {
     try {
-      const usuario = await prisma.usuario.findFirst({
-        where: {
-          OR: [{ email: emailOuCpf }, { cpf: emailOuCpf }],
-        },
+      const usuarioEncontrado = await Usuario.findOne({
+        $or: [{ email: emailOuCpf }, { cpf: emailOuCpf }],
       });
 
-      if (!usuario) {
+      if (!usuarioEncontrado) {
         throw new Error("Credenciais inválidas");
       }
 
-      if (!usuario.ativo) {
+      if (!usuarioEncontrado.ativo) {
         throw new Error("Usuário desativado. Entre em contato com um administrador.");
       }
 
-      const senhaValida = await compare(senha, usuario.senha);
+      const senhaValida = await compare(senha, usuarioEncontrado.senha);
 
       if (!senhaValida) {
         throw new Error("Credenciais inválidas");
       }
 
-      const { senha: _, ...usuarioSemSenha } = usuario;
-      const token = Auth.gerarToken(usuario.id, usuario.email);
+      const usuarioSemSenha = normalizeDocument(usuarioEncontrado);
+      const token = Auth.gerarToken(usuarioEncontrado._id.toString(), usuarioEncontrado.email);
 
       return { usuario: usuarioSemSenha, token };
     } catch (error) {

@@ -1,3 +1,5 @@
+import { Document, Types } from "mongoose";
+
 interface DadosIndividuais {
   nomeCompleto: string;
   genero: number;
@@ -62,7 +64,7 @@ interface SistemasGestao {
   boasPraticasConsumidorAltaPercepcaoRisco: number;
 }
 
-export interface IGestor {
+export interface IGestor extends Document {
   dadosIndividuais: DadosIndividuais;
   conhecimento: Conhecimento;
   comprometimentoAfetivo: ComprometimentoAfetivo;
@@ -70,5 +72,6 @@ export interface IGestor {
   comprometimentoInstrumental: ComprometimentoInstrumental;
   percepcaoRisco: PercepcaoRisco;
   sistemasGestao: SistemasGestao;
-  idAvaliacao: string;
+
+  idAvaliacao: Types.ObjectId;
 }

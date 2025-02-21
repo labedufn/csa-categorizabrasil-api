@@ -1,6 +1,6 @@
+import { AnaliseQualitativa } from "@models/analiseQualitativa.model";
 import { IAnaliseQualitativa } from "@interfaces/IAnaliseQualitativa";
 import { throwHandledError } from "@utils/throwHandledError";
-import { prisma } from "@config/prisma";
 
 export class AnaliseQualitativaService {
   /**
@@ -11,12 +11,10 @@ export class AnaliseQualitativaService {
    */
   async criarAnaliseQualitativa(idAvaliacao: string, analiseQualitativa: IAnaliseQualitativa) {
     try {
-      return await prisma.analiseQualitativa.create({
-        data: {
-          idAvaliacao,
-          informacoes: JSON.stringify(analiseQualitativa),
-        },
+      const novaAnalise = await AnaliseQualitativa.create({
+        idAvaliacao,
       });
+      return novaAnalise;
     } catch (error) {
       throwHandledError("Erro ao criar análise qualitativa", error);
     }
@@ -29,9 +27,8 @@ export class AnaliseQualitativaService {
    */
   async buscarAnaliseQualitativaPorAvaliacao(idAvaliacao: string) {
     try {
-      return await prisma.analiseQualitativa.findMany({
-        where: { idAvaliacao },
-      });
+      const analises = await AnaliseQualitativa.find({ idAvaliacao });
+      return analises;
     } catch (error) {
       throwHandledError("Erro ao buscar análise qualitativa por avaliação", error);
     }
@@ -44,9 +41,8 @@ export class AnaliseQualitativaService {
    */
   async buscarAnaliseQualitativaPorId(idAnaliseQualitativa: string) {
     try {
-      return await prisma.analiseQualitativa.findUnique({
-        where: { id: idAnaliseQualitativa },
-      });
+      const analise = await AnaliseQualitativa.findById(idAnaliseQualitativa);
+      return analise;
     } catch (error) {
       throwHandledError("Erro ao buscar análise qualitativa por ID", error);
     }
@@ -60,10 +56,12 @@ export class AnaliseQualitativaService {
    */
   async editarAnaliseQualitativa(idAnaliseQualitativa: string, analiseQualitativa: IAnaliseQualitativa) {
     try {
-      return await prisma.analiseQualitativa.update({
-        where: { id: idAnaliseQualitativa },
-        data: { informacoes: JSON.stringify(analiseQualitativa) },
-      });
+      const analiseAtualizada = await AnaliseQualitativa.findByIdAndUpdate(
+        idAnaliseQualitativa,
+        { informacoes: JSON.stringify(analiseQualitativa) },
+        { new: true },
+      );
+      return analiseAtualizada;
     } catch (error) {
       throwHandledError("Erro ao editar análise qualitativa", error);
     }
@@ -75,9 +73,7 @@ export class AnaliseQualitativaService {
    */
   async deletarAnaliseQualitativa(idAnaliseQualitativa: string) {
     try {
-      await prisma.analiseQualitativa.delete({
-        where: { id: idAnaliseQualitativa },
-      });
+      await AnaliseQualitativa.findByIdAndDelete(idAnaliseQualitativa);
       return;
     } catch (error) {
       throwHandledError("Erro ao deletar análise qualitativa", error);

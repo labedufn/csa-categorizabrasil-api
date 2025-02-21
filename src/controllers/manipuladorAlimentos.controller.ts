@@ -1,18 +1,19 @@
 import { ManipuladorAlimentosService } from "@services/manipuladorAlimentos.service";
-import { IManipuladorAlimentos } from "@interfaces/IManipuladorAlimento";
+import { IManipuladorAlimentos } from "@interfaces/IManipuladorAlimentos";
 import { FastifyRequest, FastifyReply } from "fastify";
+import { Types } from "mongoose";
 
 const manipuladorAlimentosService = new ManipuladorAlimentosService();
 
 export class ManipuladorAlimentosController {
   static async criarManipuladorAlimentos(req: FastifyRequest, reply: FastifyReply) {
     try {
-      const { idAvaliacao } = req.params as { idAvaliacao: string };
+      const { idAvaliacao } = req.params as { idAvaliacao: Types.ObjectId };
 
-      const manipuladorAlimentosCriado = await manipuladorAlimentosService.criarManipuladorAlimentos(idAvaliacao, {
-        ...(req.body as IManipuladorAlimentos),
+      const manipuladorAlimentosCriado = await manipuladorAlimentosService.criarManipuladorAlimentos(
         idAvaliacao,
-      });
+        req.body as IManipuladorAlimentos,
+      );
 
       reply.send({ manipuladorAlimentosCriado });
     } catch (error) {

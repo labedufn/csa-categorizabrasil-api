@@ -1,7 +1,7 @@
 import { atualizarUsuarioSchema, atualizarSenhaSchema } from "@schemas/usuario.schema";
 import { UsuarioService } from "@services/usuario.service";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { prisma } from "@config/prisma";
+import { Usuario } from "@models/usuario.model";
 import { z } from "zod";
 
 const usuarioService = new UsuarioService();
@@ -64,9 +64,8 @@ export class UsuarioController {
 
   static async buscarUsuarioPorId(req: FastifyRequest, reply: FastifyReply) {
     try {
-      const { idUsuario } = req.params as { idUsuario: string };
+      const { id: idUsuario } = req.params as { id: string };
       const usuario = await usuarioService.buscarUsuarioPorId(idUsuario);
-
       reply.send({ usuario });
     } catch (error) {
       reply.status(400).send({ error: (error as Error).message });
@@ -101,7 +100,7 @@ export class UsuarioController {
 
       return reply.send({
         message: `Status do usuário atualizado com sucesso`,
-        ativo: resultado.ativo,
+        ativo: resultado?.ativo ?? false,
       });
     } catch (error) {
       return reply.status(400).send({ message: (error as Error).message });
@@ -118,7 +117,8 @@ export class UsuarioController {
       const { id: targetUsuarioId } = req.params as { id: string };
       const { novoTipo } = req.body as { novoTipo: "ADMINISTRADOR" | "GESTOR" | "AVALIADOR" };
 
-      const targetUsuario = await prisma.usuario.findUnique({ where: { id: targetUsuarioId } });
+      // Converter a consulta para Mongoose
+      const targetUsuario = await Usuario.findById(targetUsuarioId).exec();
       if (!targetUsuario) {
         return reply.status(404).send({ message: "Usuário não encontrado" });
       }

@@ -1,22 +1,22 @@
-import { IManipuladorAlimentos } from "@interfaces/IManipuladorAlimento";
+import { ManipuladorAlimentos } from "@models/manipuladorAlimentos.model";
+import { IManipuladorAlimentos } from "@interfaces/IManipuladorAlimentos";
 import { throwHandledError } from "@utils/throwHandledError";
-import { prisma } from "@config/prisma";
+import { Types } from "mongoose";
 
 export class ManipuladorAlimentosService {
   /**
    * Cria um manipulador de alimentos.
    * @param idAvaliacao - O identificador da avaliação relacionado.
-   * @param manipuladorAlimentos - O manipulador de alimentos a ser criado.
+   * @param manipuladorAlimentosData - O manipulador de alimentos a ser criado.
    * @returns O manipulador de alimentos criado.
    */
-  async criarManipuladorAlimentos(idAvaliacao: string, manipuladorAlimentos: IManipuladorAlimentos) {
+  async criarManipuladorAlimentos(idAvaliacao: Types.ObjectId, manipuladorAlimentosData: IManipuladorAlimentos) {
     try {
-      return await prisma.manipuladorAlimentos.create({
-        data: {
-          idAvaliacao,
-          informacoes: JSON.stringify(manipuladorAlimentos),
-        },
+      const novoManipulador = await ManipuladorAlimentos.create({
+        idAvaliacao,
+        informacoes: JSON.stringify(manipuladorAlimentosData),
       });
+      return novoManipulador;
     } catch (error) {
       throwHandledError("Erro ao criar manipulador de alimentos", error);
     }
@@ -29,9 +29,8 @@ export class ManipuladorAlimentosService {
    */
   async buscarManipuladoresAlimentosPorAvaliacao(idAvaliacao: string) {
     try {
-      return await prisma.manipuladorAlimentos.findMany({
-        where: { idAvaliacao },
-      });
+      const manipuladores = await ManipuladorAlimentos.find({ idAvaliacao });
+      return manipuladores;
     } catch (error) {
       throwHandledError("Erro ao buscar manipuladores de alimentos por avaliação", error);
     }
@@ -44,9 +43,8 @@ export class ManipuladorAlimentosService {
    */
   async buscarManipuladorAlimentosPorId(idManipuladorAlimentos: string) {
     try {
-      return await prisma.manipuladorAlimentos.findUnique({
-        where: { id: idManipuladorAlimentos },
-      });
+      const manipulador = await ManipuladorAlimentos.findById(idManipuladorAlimentos);
+      return manipulador;
     } catch (error) {
       throwHandledError("Erro ao buscar manipulador de alimentos por ID", error);
     }
@@ -55,15 +53,17 @@ export class ManipuladorAlimentosService {
   /**
    * Edita um manipulador de alimentos.
    * @param idManipuladorAlimentos - O identificador do manipulador de alimentos.
-   * @param manipuladorAlimentos - O manipulador de alimentos a ser editado.
+   * @param manipuladorAlimentosData - Os dados do manipulador de alimentos a serem editados.
    * @returns O manipulador de alimentos editado.
    */
-  async editarManipuladorAlimentos(idManipuladorAlimentos: string, manipuladorAlimentos: IManipuladorAlimentos) {
+  async editarManipuladorAlimentos(idManipuladorAlimentos: string, manipuladorAlimentosData: IManipuladorAlimentos) {
     try {
-      return await prisma.manipuladorAlimentos.update({
-        where: { id: idManipuladorAlimentos },
-        data: { informacoes: JSON.stringify(manipuladorAlimentos) },
-      });
+      const manipuladorAtualizado = await ManipuladorAlimentos.findByIdAndUpdate(
+        idManipuladorAlimentos,
+        { informacoes: JSON.stringify(manipuladorAlimentosData) },
+        { new: true },
+      );
+      return manipuladorAtualizado;
     } catch (error) {
       throwHandledError("Erro ao editar manipulador de alimentos", error);
     }
@@ -75,9 +75,7 @@ export class ManipuladorAlimentosService {
    */
   async deletarManipuladorAlimentos(idManipuladorAlimentos: string) {
     try {
-      await prisma.gestores.delete({
-        where: { id: idManipuladorAlimentos },
-      });
+      await ManipuladorAlimentos.findByIdAndDelete(idManipuladorAlimentos);
       return;
     } catch (error) {
       throwHandledError("Erro ao deletar manipulador de alimentos", error);

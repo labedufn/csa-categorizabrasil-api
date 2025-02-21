@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { prisma } from "@config/prisma";
+import { Usuario } from "@models/usuario.model";
 import { Auth } from "@config/auth";
 
 export async function authMiddleware(req: FastifyRequest, reply: FastifyReply) {
@@ -16,21 +16,21 @@ export async function authMiddleware(req: FastifyRequest, reply: FastifyReply) {
 
     const decoded = Auth.verificarToken(token) as { id: string; email: string };
 
-    const usuarioFromDb = await prisma.usuario.findUnique({
-      where: { id: decoded.id },
-    });
-
+    const usuarioFromDb = await Usuario.findById(decoded.id);
     if (!usuarioFromDb) {
       return reply.status(401).send({ message: "Usuário não encontrado" });
     }
 
     req.usuario = {
-      id: usuarioFromDb.id,
+      id: usuarioFromDb._id.toString(),
       email: usuarioFromDb.email,
       tipo: usuarioFromDb.tipo as "ADMINISTRADOR" | "GESTOR" | "AVALIADOR",
       instituicao: usuarioFromDb.instituicao,
     };
   } catch (error) {
-    return reply.status(401).send({ message: "Acesso não autorizado", error: (error as Error).message });
+    return reply.status(401).send({
+      message: "Acesso não autorizado",
+      error: (error as Error).message,
+    });
   }
 }

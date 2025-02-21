@@ -15,6 +15,7 @@
       "@controllers/*": ["src/controllers/*"],
       "@interfaces/*": ["src/interfaces/*"],
       "@middlewares/*": ["src/middlewares/*"],
+      "@models/*": ["src/models/*"],
       "@schemas/*": ["src/schemas/*"],
       "@routes/*": ["src/routes/*"],
       "@services/*": ["src/services/*"],

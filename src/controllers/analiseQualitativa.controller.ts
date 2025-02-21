@@ -1,18 +1,19 @@
 import { AnaliseQualitativaService } from "@services/analiseQualitativa.service";
 import { IAnaliseQualitativa } from "@interfaces/IAnaliseQualitativa";
 import { FastifyRequest, FastifyReply } from "fastify";
+import { Types } from "mongoose";
 
 const analiseQualitativaService = new AnaliseQualitativaService();
 
 export class AnaliseQualitativaController {
   static async criarAnaliseQualitativa(req: FastifyRequest, reply: FastifyReply) {
     try {
-      const { idAvaliacao } = req.params as { idAvaliacao: string };
+      const { idAvaliacao } = req.params as { idAvaliacao: Types.ObjectId };
 
-      const analiseQualitativaCriada = await analiseQualitativaService.criarAnaliseQualitativa(idAvaliacao, {
-        ...(req.body as IAnaliseQualitativa),
-        idAvaliacao,
-      });
+      const analiseQualitativaCriada = await analiseQualitativaService.criarAnaliseQualitativa(
+        idAvaliacao.toString(),
+        req.body as IAnaliseQualitativa,
+      );
 
       reply.send({ analiseQualitativaCriada });
     } catch (error) {

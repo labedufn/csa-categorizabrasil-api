@@ -1,3 +1,5 @@
+import { Document, Types } from "mongoose";
+
 interface AnaliseQualitativaItem {
   valor: number;
   escore?: string;
@@ -100,7 +102,7 @@ interface SistemaGestao {
   processoProducaoAlinhadoPraticasSegurasProjetadoMinimizarRiscos: AnaliseQualitativaItem;
 }
 
-export interface IAnaliseQualitativa {
+export interface IAnaliseQualitativa extends Document {
   lideranca: Lideranca;
   comunicacao: Comunicacao;
   conhecimento: Conhecimento;
@@ -109,5 +111,6 @@ export interface IAnaliseQualitativa {
   pressaoTrabalhoCrencasNormativas: PressaoTrabalhoCrencasNormativas;
   ambienteTrabalho: AmbienteTrabalho;
   sistemaGestao: SistemaGestao;
-  idAvaliacao: string;
+
+  idAvaliacao: Types.ObjectId;
 }

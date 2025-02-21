@@ -1,18 +1,19 @@
 import { GestorService } from "@services/gestor.service";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { IGestor } from "@interfaces/IGestor";
+import { Types } from "mongoose";
 
 const gestorService = new GestorService();
 
 export class GestorController {
   static async criarGestor(req: FastifyRequest, reply: FastifyReply) {
     try {
-      const { idAvaliacao } = req.params as { idAvaliacao: string };
+      const { idAvaliacao } = req.params as { idAvaliacao: Types.ObjectId };
 
-      const gestorCriado = await gestorService.criarGestor(idAvaliacao, {
-        ...(req.body as IGestor),
-        idAvaliacao,
-      });
+      const gestorData = req.body as IGestor;
+      gestorData.idAvaliacao = idAvaliacao;
+
+      const gestorCriado = await gestorService.criarGestor(idAvaliacao, gestorData);
 
       reply.send({ gestorCriado });
     } catch (error) {

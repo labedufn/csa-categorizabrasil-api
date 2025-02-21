@@ -7,4 +7,6 @@ export interface IUsuario {
   instituicao: string;
   tipo: "ADMINISTRADOR" | "GESTOR" | "AVALIADOR";
   ativo?: boolean;
+  criadoEm?: Date;
+  alteradoEm?: Date;
 }

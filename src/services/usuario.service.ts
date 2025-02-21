@@ -1,28 +1,23 @@
 import { throwHandledError } from "@utils/throwHandledError";
+import { Usuario } from "@models/usuario.model";
 import { IUsuario } from "@interfaces/IUsuario";
 import { compare, hash } from "bcryptjs";
-import { prisma } from "@config/prisma";
 
 export class UsuarioService {
   /**
    * Atualiza dados de um usuário.
-   * @param id - Identificador do usuário no banco.
-   * @param data - Dados de usuário (parcial, pois nem sempre todos os campos são enviados).
+   * @param id - Identificador do usuário.
+   * @param data - Dados parciais do usuário.
    * @returns O usuário atualizado.
    */
   async atualizarUsuario(id: string, data: Partial<IUsuario>) {
     try {
-      const usuario = await prisma.usuario.findUnique({ where: { id } });
-      if (!usuario) {
+      const user = await Usuario.findById(id);
+      if (!user) {
         throw new Error("Usuário não encontrado");
       }
-
-      const usuarioAtualizado = await prisma.usuario.update({
-        where: { id },
-        data,
-      });
-
-      return usuarioAtualizado;
+      const updatedUser = await Usuario.findByIdAndUpdate(id, data, { new: true });
+      return updatedUser;
     } catch (error) {
       throwHandledError("Erro ao atualizar usuário", error);
     }
@@ -30,29 +25,25 @@ export class UsuarioService {
 
   /**
    * Altera a senha de um usuário.
-   * @param id - Identificador do usuário no banco.
+   * @param id - Identificador do usuário.
    * @param senhaAtual - Senha atual do usuário.
    * @param novaSenha - Nova senha para substituição.
-   * @returns Uma mensagem de sucesso caso tudo corra bem.
+   * @returns Uma mensagem de sucesso.
    */
   async alterarSenha(id: string, senhaAtual: string, novaSenha: string) {
     try {
-      const usuario = await prisma.usuario.findUnique({ where: { id } });
-      if (!usuario) {
+      const user = await Usuario.findById(id);
+      if (!user) {
         throw new Error("Usuário não encontrado");
       }
 
-      const senhaValida = await compare(senhaAtual, usuario.senha);
+      const senhaValida = await compare(senhaAtual, user.senha);
       if (!senhaValida) {
         throw new Error("Senha atual inválida");
       }
 
       const novaSenhaHash = await hash(novaSenha, 10);
-
-      await prisma.usuario.update({
-        where: { id },
-        data: { senha: novaSenhaHash },
-      });
+      await Usuario.findByIdAndUpdate(id, { senha: novaSenhaHash });
 
       return { message: "Senha atualizada com sucesso" };
     } catch (error) {
@@ -66,7 +57,7 @@ export class UsuarioService {
    */
   async listarUsuarios() {
     try {
-      const usuarios = await prisma.usuario.findMany({ where: { ativo: true } });
+      const usuarios = await Usuario.find({ ativo: true });
       return usuarios;
     } catch (error) {
       throwHandledError("Erro ao listar usuários", error);
@@ -80,12 +71,7 @@ export class UsuarioService {
    */
   async listarUsuariosPorInstituicao(instituicao: string) {
     try {
-      const usuarios = await prisma.usuario.findMany({
-        where: {
-          ativo: true,
-          instituicao,
-        },
-      });
+      const usuarios = await Usuario.find({ ativo: true, instituicao });
       return usuarios;
     } catch (error) {
       throwHandledError("Erro ao listar usuários por instituição", error);
@@ -99,8 +85,25 @@ export class UsuarioService {
    */
   async buscarUsuarioPorId(id: string) {
     try {
-      const usuario = await prisma.usuario.findUnique({ where: { id } });
-      return usuario;
+      const usuario = await Usuario.findById(id);
+      if (!usuario) {
+        throw new Error("Usuário não encontrado");
+      }
+
+      // Mapeia para o schema definido
+      const usuarioFormatado = {
+        id: usuario._id.toString(), // converte ObjectId para string
+        nome: usuario.nome,
+        sobrenome: usuario.sobrenome,
+        cpf: usuario.cpf,
+        email: usuario.email,
+        instituicao: usuario.instituicao,
+        tipo: usuario.tipo,
+        ativo: usuario.ativo,
+      };
+
+      console.log("USUARIO FORMATADO", usuarioFormatado);
+      return usuarioFormatado;
     } catch (error) {
       throwHandledError("Erro ao buscar usuário por ID", error);
     }
@@ -108,16 +111,14 @@ export class UsuarioService {
 
   /**
    * Altera o tipo de um usuário (ex.: "ADMINISTRADOR", "GESTOR" ou "AVALIADOR").
-   * @param idUsuario - Identificador do usuário no banco.
+   * @param idUsuario - Identificador do usuário.
    * @param novoTipo - Novo tipo de usuário.
    * @returns O usuário atualizado.
    */
   async alterarTipoUsuario(idUsuario: string, novoTipo: "ADMINISTRADOR" | "GESTOR" | "AVALIADOR") {
     try {
-      return await prisma.usuario.update({
-        where: { id: idUsuario },
-        data: { tipo: novoTipo },
-      });
+      const updatedUser = await Usuario.findByIdAndUpdate(idUsuario, { tipo: novoTipo }, { new: true });
+      return updatedUser;
     } catch (error) {
       throwHandledError("Erro ao alterar tipo de usuário", error);
     }
@@ -125,16 +126,14 @@ export class UsuarioService {
 
   /**
    * Ativa ou desativa um usuário.
-   * @param idUsuario - Identificador do usuário no banco.
+   * @param idUsuario - Identificador do usuário.
    * @param ativo - Novo status do usuário.
    * @returns O usuário atualizado.
    */
   async alterarStatusUsuario(idUsuario: string, ativo: boolean) {
     try {
-      return await prisma.usuario.update({
-        where: { id: idUsuario },
-        data: { ativo },
-      });
+      const updatedUser = await Usuario.findByIdAndUpdate(idUsuario, { ativo }, { new: true });
+      return updatedUser;
     } catch (error) {
       throwHandledError("Erro ao alterar status do usuário", error);
     }

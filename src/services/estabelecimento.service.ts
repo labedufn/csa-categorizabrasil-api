@@ -1,20 +1,19 @@
+import { Estabelecimento } from "@models/estabelecimento.model";
 import { IEstabelecimento } from "@interfaces/IEstabelecimento";
 import { throwHandledError } from "@utils/throwHandledError";
-import { prisma } from "@config/prisma";
 
 export class EstabelecimentoService {
   /**
    * Cria um novo estabelecimento.
-   * @param estabelecimento - Os dados do estabelecimento.
+   * @param estabelecimentoData - Os dados do estabelecimento.
    * @returns O estabelecimento criado.
    */
-  async criarEstabelecimento(estabelecimento: IEstabelecimento) {
+  async criarEstabelecimento(estabelecimentoData: IEstabelecimento) {
     try {
-      return await prisma.estabelecimento.create({
-        data: {
-          ...estabelecimento,
-        },
+      const novoEstabelecimento = await Estabelecimento.create({
+        ...estabelecimentoData,
       });
+      return novoEstabelecimento;
     } catch (error) {
       throwHandledError("Erro ao criar estabelecimento", error);
     }
@@ -23,15 +22,13 @@ export class EstabelecimentoService {
   /**
    * Edita um estabelecimento.
    * @param id - O identificador do estabelecimento.
-   * @param dados - Os dados do estabelecimento a serem editados (exceto o ativo).
+   * @param dados - Dados parciais do estabelecimento.
    * @returns O estabelecimento editado.
    */
   async editarEstabelecimento(id: string, dados: Partial<IEstabelecimento>) {
     try {
-      return await prisma.estabelecimento.update({
-        where: { id },
-        data: dados,
-      });
+      const estabelecimentoAtualizado = await Estabelecimento.findByIdAndUpdate(id, dados, { new: true });
+      return estabelecimentoAtualizado;
     } catch (error) {
       throwHandledError("Erro ao editar estabelecimento", error);
     }
@@ -39,33 +36,31 @@ export class EstabelecimentoService {
 
   /**
    * Lista todos os estabelecimentos ativos.
-   * @returns Os estabelecimentos ativos.
+   * @returns Uma lista de estabelecimentos com ativo = true.
    */
   async listarEstabelecimentos() {
     try {
-      return await prisma.estabelecimento.findMany({
-        where: { ativo: true },
-      });
+      const estabelecimentosAtivos = await Estabelecimento.find({ ativo: true });
+      return estabelecimentosAtivos;
     } catch (error) {
       throwHandledError("Erro ao listar estabelecimentos", error);
     }
   }
 
   /**
-   * Desativa/Exclui um estabelecimento.
+   * Desativa (ou exclui) um estabelecimento.
    * @param id - O identificador do estabelecimento.
-   * @param alteradoPor - O identificador do usuário que desativou o estabelecimento.
+   * @param alteradoPor - Identificador do usuário que desativou o estabelecimento.
    * @returns O estabelecimento desativado.
    */
   async desativarEstabelecimento(id: string, alteradoPor: string) {
     try {
-      return await prisma.estabelecimento.update({
-        where: { id },
-        data: {
-          ativo: false,
-          alteradoPor,
-        },
-      });
+      const estabelecimentoDesativado = await Estabelecimento.findByIdAndUpdate(
+        id,
+        { ativo: false, alteradoPor },
+        { new: true },
+      );
+      return estabelecimentoDesativado;
     } catch (error) {
       throwHandledError("Erro ao desativar estabelecimento", error);
     }

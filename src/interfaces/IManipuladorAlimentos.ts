@@ -1,3 +1,5 @@
+import { Document, Types } from "mongoose";
+
 interface DadosIndividuais {
   nomeCompleto: string;
   genero: number;
@@ -95,7 +97,7 @@ interface SistemasGestao {
   economizarProdutosHigienizacaoDiminuirCusto: number;
 }
 
-export interface IManipuladorAlimentos {
+export interface IManipuladorAlimentos extends Document {
   dadosIndividuais: DadosIndividuais;
   lideranca: Lideranca;
   comunicacao: Comunicacao;
@@ -108,5 +110,9 @@ export interface IManipuladorAlimentos {
   pressoesTrabalhoCrencasNormativas: PressoesTrabalhoCrencasNormativas;
   ambienteTrabalho: AmbienteTrabalho;
   sistemasGestao: SistemasGestao;
-  idAvaliacao: string;
+  idAvaliacao: Types.ObjectId;
+  criadoEm: Date;
+  alteradoEm: Date;
+  ativo?: boolean;
+  analiseQuantitativa: Types.ObjectId[];
 }
