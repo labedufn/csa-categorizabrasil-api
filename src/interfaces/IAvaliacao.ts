@@ -1,4 +1,6 @@
+import { Types } from "mongoose";
+
 export interface IAvaliacao extends Document {
-  idEstabelecimento: string;
-  idCriador: string;
+  idEstabelecimento: Types.ObjectId;
+  idCriador: Types.ObjectId;
 }
