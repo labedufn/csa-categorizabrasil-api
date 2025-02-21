@@ -1,6 +1,8 @@
 import {
   criarEstabelecimentoBodySchema,
   criarEstabelecimentoResponseSchema,
+  desativarEstabelecimentoBodySchema,
+  desativarEstabelecimentoResponseSchema,
   editarEstabelecimentoBodySchema,
   editarEstabelecimentoResponseSchema,
   listarEstabelecimentosResponseSchema,
@@ -76,8 +78,9 @@ export async function estabelecimentoRoutes(app: FastifyInstance) {
         security: [{ bearerAuth: [] }],
         headers: authHeadersSchema,
         description: "Desativa um estabelecimento. É necessário informar o token Bearer no header 'Authorization'.",
+        body: desativarEstabelecimentoBodySchema,
         response: {
-          200: editarEstabelecimentoResponseSchema,
+          200: desativarEstabelecimentoResponseSchema,
         },
       },
     },

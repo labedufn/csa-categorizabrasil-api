@@ -70,7 +70,7 @@ export class EstabelecimentoService {
         { ativo: false, alteradoPor },
         { new: true },
       );
-      return estabelecimentoDesativado;
+      return { message: "Estabelecimento desativado com sucesso" };
     } catch (error) {
       throwHandledError("Erro ao desativar estabelecimento", error);
     }

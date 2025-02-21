@@ -58,7 +58,7 @@ export class EstabelecimentoController {
         alteradoPor,
       );
 
-      reply.send({ estabelecimentoDesativado });
+      reply.send(estabelecimentoDesativado);
     } catch (error) {
       reply.status(400).send({ error: (error as Error).message });
     }
