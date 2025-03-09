@@ -62,6 +62,8 @@ export const listarEstabelecimentosResponseSchema = z.array(
     possuiAlvaraSanitario: z.number(),
     possuiResponsavelBoasPraticas: z.number(),
     alteradoPor: z.string(),
+    criadoEm: z.date(),
+    alteradoEm: z.date(),
     ativo: z.boolean(),
   }),
 );

@@ -10,13 +10,20 @@ export class AvaliacaoService {
    * @param idUsuario - O identificador do usuário que criou a avaliação.
    * @returns A avaliação criada.
    */
-  async criarAvaliacao(avaliacao: Types.ObjectId, idUsuario: string) {
+  async criarAvaliacao(idEstabelecimento: Types.ObjectId, idUsuario: string) {
     try {
       const novaAvaliacao = await Avaliacao.create({
-        ...avaliacao,
+        idEstabelecimento,
         idCriador: idUsuario,
       });
-      return novaAvaliacao;
+      const avaliacaoCriada = {
+        id: novaAvaliacao._id.toString(),
+        idEstabelecimento: novaAvaliacao.idEstabelecimento.toString(),
+        criadoEm: novaAvaliacao.criadoEm,
+        alteradoEm: novaAvaliacao.alteradoEm,
+        ativo: novaAvaliacao.ativo,
+      };
+      return avaliacaoCriada;
     } catch (error) {
       throwHandledError("Erro ao criar avaliação", error);
     }

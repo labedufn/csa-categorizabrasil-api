@@ -10,5 +10,7 @@ export interface IEstabelecimento {
   possuiAlvaraSanitario: number;
   possuiResponsavelBoasPraticas: number;
   alteradoPor: string;
+  criadoEm?: Date;
+  alteradoEm?: Date;
   ativo?: boolean;
 }

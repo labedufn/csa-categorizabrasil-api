@@ -1,5 +1,5 @@
 import { mongooseConnection } from "@config/mongoose";
-import { usuario } from "@models/usuario.model";
+import { Usuario } from "@models/usuario.model";
 import { question } from "readline-sync";
 import { hash } from "bcryptjs";
 import { config } from "dotenv";
@@ -25,7 +25,7 @@ async function criarUsuario() {
 
     const senhaCriptografada = await hash(senha, 10);
 
-    const novoUsuario = await usuario.create({
+    const novoUsuario = await Usuario.create({
       nome,
       sobrenome,
       cpf,

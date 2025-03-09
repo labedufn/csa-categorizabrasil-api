@@ -7,6 +7,7 @@
     "start": "node dist/server.js",
     "dev": "ts-node-dev -r tsconfig-paths/register --transpile-only --ignore-watch node_modules src/server.ts",
     "dev:docker": "docker compose -f docker-compose.yml up",
+    "dev:all": "concurrently \"npm run dev:docker\" \"npm run dev\"",
     "criar:usuario": "node src/scripts/criarUsuario.js",
     "dev:criar:usuario": "ts-node -r tsconfig-paths/register src/scripts/criarUsuario.ts"
   },
@@ -38,6 +39,7 @@
     "@types/jsonwebtoken": "^9.0.8",
     "@types/node": "^22.13.1",
     "@types/readline-sync": "^1.4.8",
+    "concurrently": "^9.1.2",
     "eslint": "^9.20.0",
     "eslint-config-prettier": "^10.0.1",
     "prettier-plugin-sort-imports": "^1.8.6",

@@ -8,8 +8,8 @@ export const criarAvaliacaoResponseSchema = z.object({
   avaliacaoCriada: z.object({
     id: z.string(),
     idEstabelecimento: z.string(),
-    criadoEm: z.preprocess((arg) => (arg instanceof Date ? arg.toISOString() : arg), z.string()),
-    alteradoEm: z.preprocess((arg) => (arg instanceof Date ? arg.toISOString() : arg), z.string()),
+    criadoEm: z.date(),
+    alteradoEm: z.date(),
     ativo: z.boolean(),
   }),
 });
