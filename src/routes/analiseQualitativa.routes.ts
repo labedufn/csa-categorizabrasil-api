@@ -27,23 +27,24 @@ export async function analiseQualitativaRoutes(app: FastifyInstance) {
     AnaliseQualitativaController.criarAnaliseQualitativa,
   );
 
-  app.get(
-    "/api/avaliacoes/:id/analise-qualitativa",
-    {
-      preHandler: authMiddleware,
-      schema: {
-        tags: ["Análise Qualitativa"],
-        security: [{ bearerAuth: [] }],
-        headers: authHeadersSchema,
-        description:
-          "Busca todas as análises qualitativas de uma avaliação. É necessário informar o token Bearer no header 'Authorization'.",
-        response: { 200: analiseQualitativaPorAvaliacaoSchema },
-      },
-    },
-    async (req, reply) => {
-      await AnaliseQualitativaController.buscarAnaliseQualitativaPorAvaliacao(req, reply);
-    },
-  );
+  // Não é necessário buscar todas as análises qualitativas de uma avaliação, pois somente uma análise qualitativa é permitida por avaliação.
+  // app.get(
+  //   "/api/avaliacoes/:id/analise-qualitativa",
+  //   {
+  //     preHandler: authMiddleware,
+  //     schema: {
+  //       tags: ["Análise Qualitativa"],
+  //       security: [{ bearerAuth: [] }],
+  //       headers: authHeadersSchema,
+  //       description:
+  //         "Busca todas as análises qualitativas de uma avaliação. É necessário informar o token Bearer no header 'Authorization'.",
+  //       response: { 200: analiseQualitativaPorAvaliacaoSchema },
+  //     },
+  //   },
+  //   async (req, reply) => {
+  //     await AnaliseQualitativaController.buscarAnaliseQualitativaPorAvaliacao(req, reply);
+  //   },
+  // );
 
   app.get(
     "/api/avaliacoes/analise-qualitativa/:id",

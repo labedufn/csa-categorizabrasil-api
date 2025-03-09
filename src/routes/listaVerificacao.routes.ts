@@ -27,23 +27,24 @@ export async function listaVerificacaoRoutes(app: FastifyInstance) {
     ListaVerificacaoController.criarListaVerificacao,
   );
 
-  app.get(
-    "/api/avaliacoes/:id/lista-verificacao",
-    {
-      preHandler: authMiddleware,
-      schema: {
-        tags: ["Lista de Verificação"],
-        security: [{ bearerAuth: [] }],
-        headers: authHeadersSchema,
-        description:
-          "Busca todas as análises qualitativas de uma avaliação. É necessário informar o token Bearer no header 'Authorization'.",
-        response: { 200: listaVerificacaoPorAvaliacaoSchema },
-      },
-    },
-    async (req, reply) => {
-      await ListaVerificacaoController.buscarListaVerificacaoPorAvaliacao(req, reply);
-    },
-  );
+  // Não é necessário buscar todas as listas de verificação de uma avaliação, pois somente uma lista de verificação é permitida por avaliação.
+  // app.get(
+  //   "/api/avaliacoes/:id/lista-verificacao",
+  //   {
+  //     preHandler: authMiddleware,
+  //     schema: {
+  //       tags: ["Lista de Verificação"],
+  //       security: [{ bearerAuth: [] }],
+  //       headers: authHeadersSchema,
+  //       description:
+  //         "Busca todas as listas de verificação qualitativas de uma avaliação. É necessário informar o token Bearer no header 'Authorization'.",
+  //       response: { 200: listaVerificacaoPorAvaliacaoSchema },
+  //     },
+  //   },
+  //   async (req, reply) => {
+  //     await ListaVerificacaoController.buscarListaVerificacaoPorAvaliacao(req, reply);
+  //   },
+  // );
 
   app.get(
     "/api/avaliacoes/lista-verificacao/:id",
