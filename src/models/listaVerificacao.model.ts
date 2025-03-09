@@ -232,7 +232,7 @@ const PortasSchema = new Schema(
   { _id: false },
 );
 
-const JanelasEOOutrasAberturasSistemaDeExaustaoSchema = new Schema(
+const JanelasEOutrasAberturasSistemaDeExaustaoSchema = new Schema(
   {
     janelasMantidasAjustadasAosBatentesBemFechadasEVedadas: { type: Number, required: true },
     areaDePreparacaoEArmazenamentoProvidasDeTelasMilimetradasLimpasEmBomEstadoDeConservacaoEAjustadasAosBatentes: {
@@ -391,8 +391,8 @@ const ListaVerificacaoSchema = new Schema<IListaVerificacao>(
     instalacoesFisicasParedes: { type: InstalacoesFisicasParedesSchema, required: true },
     instalacoesFisicasTetos: { type: InstalacoesFisicasTetosSchema, required: true },
     portas: { type: PortasSchema, required: true },
-    janelasEOOutrasAberturasSistemaDeExaustao: {
-      type: JanelasEOOutrasAberturasSistemaDeExaustaoSchema,
+    janelasEOutrasAberturasSistemaDeExaustao: {
+      type: JanelasEOutrasAberturasSistemaDeExaustaoSchema,
       required: true,
     },
     ralosEGrelhas: { type: RalosEGrelhasSchema, required: true },

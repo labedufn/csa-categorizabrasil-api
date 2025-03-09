@@ -13,6 +13,7 @@ export class AnaliseQualitativaService {
     try {
       const novaAnalise = await AnaliseQualitativa.create({
         idAvaliacao,
+        ...analiseQualitativa.toObject(),
       });
       return novaAnalise;
     } catch (error) {
@@ -58,7 +59,7 @@ export class AnaliseQualitativaService {
     try {
       const analiseAtualizada = await AnaliseQualitativa.findByIdAndUpdate(
         idAnaliseQualitativa,
-        { informacoes: JSON.stringify(analiseQualitativa) },
+        { ...analiseQualitativa.toObject() },
         { new: true },
       );
       return analiseAtualizada;

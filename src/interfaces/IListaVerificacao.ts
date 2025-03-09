@@ -118,7 +118,7 @@ interface Portas {
   telasRemoviveisParaFacilitarALimpezaPeriodica: number;
 }
 
-interface JanelasEOOutrasAberturasSistemaDeExaustao {
+interface JanelasEOutrasAberturasSistemaDeExaustao {
   janelasMantidasAjustadasAosBatentesBemFechadasEVedadas: number;
   areaDePreparacaoEArmazenamentoProvidasDeTelasMilimetradasLimpasEmBomEstadoDeConservacaoEAjustadasAosBatentes: number;
   telasRemoviveisParaFacilitarALimpezaPeriodica: number;
@@ -205,7 +205,7 @@ export interface IListaVerificacao extends Document {
   instalacoesFisicasParedes: InstalacoesFisicasParedes;
   instalacoesFisicasTetos: InstalacoesFisicasTetos;
   portas: Portas;
-  janelasEOOutrasAberturasSistemaDeExaustao: JanelasEOOutrasAberturasSistemaDeExaustao;
+  janelasEOutrasAberturasSistemaDeExaustao: JanelasEOutrasAberturasSistemaDeExaustao;
   ralosEGrelhas: RalosEGrelhas;
   caixaDeGorduraEEsgoto: CaixaDeGorduraEEsgoto;
   iluminacao: Iluminacao;

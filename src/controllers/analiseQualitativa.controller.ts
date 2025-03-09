@@ -46,11 +46,11 @@ export class AnaliseQualitativaController {
   static async editarAnaliseQualitativa(req: FastifyRequest, reply: FastifyReply) {
     try {
       const { idAnaliseQualitativa } = req.params as { idAnaliseQualitativa: string };
-      const analiseQualitativaData = req.body as IAnaliseQualitativa;
+      const analiseQualitativa = req.body as IAnaliseQualitativa;
 
       const analiseQualitativaAtualizada = await analiseQualitativaService.editarAnaliseQualitativa(
         idAnaliseQualitativa,
-        analiseQualitativaData,
+        analiseQualitativa,
       );
 
       reply.send({ analiseQualitativaAtualizada });
